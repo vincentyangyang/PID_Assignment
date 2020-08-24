@@ -1,0 +1,40 @@
+create table customers(
+    cId int primary key auto_increment,
+    admin varchar(15) not null,
+    password varchar(15) not null,
+    address varchar(100),
+    birthday Date,
+    phone int(10) not null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+create table Goods(
+    gId int primary key auto_increment,
+    name varchar(50) not null,
+    price int not null,
+    description varchar(1000),
+    image varchar(100) not null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+create table Orders(
+    oId int primary key auto_increment,
+    cId int not null,
+    date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status boolean not null default 0,
+    total int not null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+create table OrderItem(
+    oId int not null,
+    cId int not null,
+    name varchar(50) not null,
+    quantity int not null,
+    sum int not null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert into goods(name,price,description,image)
+values('DELL XPS15-9500-P1545STW銀 15吋筆電 i5/8G/512G/GTX1650Ti/W10專業版',70900,'處理器CPU：10th Generation Intel Core i5 10300H (8MB Cache, up to 4.5 GHz, 4 cores)\n
+隨機記憶體種類：8GB DDR4 Dual Channel SDRAM at 2933MHz(4Gx2)\n
+顯示晶片：NVIDIA GeForce GTX 1650 Ti 4GB GDDR6\n
+硬碟容量/轉速：512GB PCIe 3 x4 SSD\n
+螢幕尺寸：15.6吋FHD\n
+螢幕解析度：(1920 x 1200) InfinityEdge display 500-nits 100%sRGB\n','2.jpeg');
