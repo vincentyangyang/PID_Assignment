@@ -1,10 +1,49 @@
 <?php
 
 session_start();
-if(isset($_SESSION['carts'])){
+header("content-type:text/html; charset=utf-8");
 
+$admin = $_SESSION['login'];
+
+if (isset($_POST['submit'])){
+    $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
+    $db->exec("SET CHARACTER SET utf8");
+
+    $sth = $db->prepare("insert into Orders(cId, total) values (:cId, :total)");
+  
+    $sth->bindParam("cId", $_SESSION['id'], PDO::PARAM_INT);
+    $sth->bindParam("total", $_SESSION['total'], PDO::PARAM_INT);
+  
+    $sth->execute();
+
+
+    foreach($_SESSION['carts'] as $cart){
+      $sum = $cart[3]*$cart[4];
+
+      $result = $db->query("select * from Orders ORDER BY oId DESC LIMIT 0 , 1");
+      $row = $result->fetch();
+
+      $sth = $db->prepare("insert into OrderItem(oId, cId, name, quantity, sum) values (:oId, :cId, :name, :quantity, :sum)");
+
+      $sth->bindParam("oId", $row[0], PDO::PARAM_INT);
+      $sth->bindParam("cId", $_SESSION['id'], PDO::PARAM_INT);
+      $sth->bindParam("name", $cart[1], PDO::PARAM_STR, 100000);
+      $sth->bindParam("quantity", $cart[4], PDO::PARAM_INT);
+      $sth->bindParam("sum", $sum, PDO::PARAM_INT);
     
+      $sth->execute();
+
+    }
+
+    $db = null;
+
+    unset($_SESSION['carts']);  
+
+    header("Location: orders.php");
+    exit();
+
 }
+
 
 
 ?>
@@ -18,9 +57,11 @@ if(isset($_SESSION['carts'])){
     <title>首頁</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>    
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <style>
       body{
@@ -37,6 +78,12 @@ if(isset($_SESSION['carts'])){
       margin-left: 60px;
       }
 
+      #guest{
+        position: absolute;
+        right: 50px;
+        color: white;
+        } 
+
       .footer{
         height: 30px;
         color: #ffffff;
@@ -48,7 +95,7 @@ if(isset($_SESSION['carts'])){
         padding: auto;
         width: 100%;
         position: absolute;
-		bottom: 0;
+        bottom: 0;
       }
 
       .fixed-bottom {
@@ -86,6 +133,7 @@ if(isset($_SESSION['carts'])){
 <div id="page-container">
 
 
+
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
 
   <a href="http://localhost:8000/pid/goodsList.php" class="navbar-brand">商城</a>
@@ -111,12 +159,15 @@ if(isset($_SESSION['carts'])){
       </li>
 
     </ul>
+
+    <span id="guest"> <a href="orders.php" class="btn btn-outline-light btn-sm">你好！<?= $admin ?></a> </span>
+
   </div>
 </nav>
 
 <h2 align="center" style="padding-top:20px;">購物車</h2>
 
-<form action="/store/submit_orders/" method="post" class="col-11" style="margin: auto;">
+<form id="form" action="" method="post" class="col-11" style="margin: auto;">
 
     <br>
     <table width="100%" border="1" align="center" class="threeboder">
@@ -132,16 +183,17 @@ if(isset($_SESSION['carts'])){
         <?php
             $sum = $cart[3] * $cart[4];
             $total += $sum;
+            $_SESSION['total'] = $total;
         ?>
         <tr style="height:150px;"> 
             <td><img src="<?= $cart[2] ?>" style="width:100px; height:100px;" /></td>
             <td height="50" align="left" class="trow"> <?= $cart[1] ?> </td>
             <td align="center" class="trow">
-                <input name="quantity_<?= $cart[0] ?>" type="text" value="<?= $cart[4] ?>" onblur="calc({{item.0}},{{item.0}},{{item.3}}, this)">
+                <input type="text" value="<?= $cart[4] ?>" onblur="calc(<?= $cart[0] ?>,'<?= $cart[1] ?>','<?= $cart[2] ?>',<?= $cart[3] ?>,this)">
             </td>
             <td align="center" class="trow"><span id="price_<?= $cart[0] ?>"><?= $cart[3] ?></span></td>
             <td align="center" class="trow"><span id="subtotal_<?= $cart[0] ?>"><?= $sum ?></span></td>
-            <td class="text-center"><a class="btn btn-outline-success btn-sm" href="add.php?id=<?= $cart[0] ?>&name=<?= $cart[1] ?>&image=<?= $cart[2] ?>&price=<?= $cart[3] ?>&quantity=0&page=cart">刪除</a></td>
+            <td class="text-center"><a class="btn btn-outline-success btn-sm" href="javascript:void(0)" 	onclick="addToCart(<?= $cart[0] ?>,'<?= $cart[1] ?>','<?= $cart[2] ?>','<?= $cart[3] ?>',0,'cart')">刪除</a></td>
         </tr>
         <?php endforeach ?>
         <tr>
@@ -150,7 +202,7 @@ if(isset($_SESSION['carts'])){
     </table>
     <br>
     <div align="center">
-        <a href="#" class="submit_orders checkout"><input type="image" src="button_checkout.png" style="width:120px; height:47px;" border="0" onclick="checkout({{list}})"/></a>  
+        <button name="submit" value="OK" type="submit" class="btn btn-success">Check Out</button>
     </div>
 </form>
 
@@ -166,23 +218,50 @@ if(isset($_SESSION['carts'])){
     $('.cart').addClass("active");
     $('.list').removeClass("active");
 
+    // $('#submit').on('click',function(){
+    //   $('#form').submit();
+    // })
 
-//   $(function(){
-//     function footerPosition(){
-//         $("footer").removeClass("fixed-bottom");
-//         var contentHeight = document.body.scrollHeight,
-//             winHeight = window.innerHeight;
-//         if(!(contentHeight > winHeight)){
 
-//             $("footer").addClass("fixed-bottom");
-//         } else {
-//             $("footer").removeClass("fixed-bottom");
-//         }
-//     }
-//     footerPosition();
-//     $(window).resize(footerPosition);
-//   });
+    function addToCart(id,name,image,price,quantity,page){
+		var dataList = {
+			id: id,
+			name: name,
+			image: image,
+			price: price,
+			quantity: quantity,
+			page: page
+		}
+		
+		$.ajax({
+			type: "get",
+			url: "add.php",
+			data: dataList
+		}).then(function(e){
+      parent.location.reload();
+			// alert("商品已刪除！！");
+		})
+	}
 
+  function calc(id,name,image,price,quantityInput) {
+    var dataList = {
+			id: id,
+			name: name,
+			image: image,
+			price: price,
+			quantity: quantityInput.value,
+			page: 'cart'
+		}
+
+    $.ajax({
+			type: "get",
+			url: "add.php",
+			data: dataList
+		}).then(function(e){
+      parent.location.reload();
+			// alert("商品已刪除！！");
+		})
+  }
 
 </script>
 </body>

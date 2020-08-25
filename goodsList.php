@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 header("content-type:text/html; charset=utf-8");
 
 $admin = $_SESSION['login'];
@@ -10,8 +11,9 @@ $db->exec("set names utf8");
 $result = $db->query("select * from goods");
 
 $db = null;
+// unset($_SESSION['id']);
 
-var_dump($_SESSION['carts']);
+// var_dump($_SESSION['id']);
 
 // $item = array("a","b","c");
 
@@ -35,12 +37,15 @@ var_dump($_SESSION['carts']);
     <meta charset="utf-8">
     <title>首頁</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-    <style>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>    
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	
+	
+	<style>
       body{
         padding: 0;
         margin: 0;
@@ -187,7 +192,7 @@ var_dump($_SESSION['carts']);
 
     </ul>
 
-	<span id="guest"> <a href="" class="btn btn-outline-light btn-sm">你好！<?= $admin ?></a> </span>
+	<span id="guest"> <a href="orders.php" class="btn btn-outline-light btn-sm">你好！<?= $admin ?></a> </span>
   </div>
 </nav>
 
@@ -201,11 +206,12 @@ var_dump($_SESSION['carts']);
 
 			<div style="height: 385px;margin: auto;width: 240px;padding:0 20px;border-style: solid;border-width:1px;border-color: #F5F5F5;">
 				<ul>
-					<li class="img"><a href="/store/detail/?id=<?= $row['gId'] ?>"><img src="<?= $row['image'] ?>"/></a></li>
-					<li class="pname"><a href="/store/detail/?id=<?= $row['gId'] ?>">產品名稱：<?= $row['name'] ?></a></li>
+					<li class="img"><a href="goodsDetail.php?id=<?= $row['gId'] ?>"><img src="<?= $row['image'] ?>"/></a></li>
+					<li class="pname"><a href="goodsDetail.php?id=<?= $row['gId'] ?>">產品名稱：<?= $row['name'] ?></a></li>
 					<li>價格：<?= $row['price'] ?></li>
 					<li class="col3" style="margin-top:3px;">
-						<a class="add_cart" href="add.php?id=<?= $row['gId'] ?>&name=<?= $row['name'] ?>&image=<?= $row['image'] ?>&price=<?= $row['price'] ?>&quantity=1&page=list">
+						<a id="add" class="add_cart" href="javascript:void(0)" 	onclick="addToCart(<?= $row['gId'] ?>,'<?= $row['name'] ?>','<?= $row['image'] ?>','<?= $row['price'] ?>',0,'list')">
+
 							<img src="add_to_cart.png" style="width:110px; height:28px;">
 						</a>
 					</li>
@@ -231,19 +237,24 @@ var_dump($_SESSION['carts']);
 	$('.list').addClass("active");
 	$('.cart').removeClass("active");
 
-	$('.add_cart').click(function(){
-		alert("商品已加入購物車！！");
-	});
-
-	// $.ajax({
-	// 	var newItem = {
-    //             title: a,
-    //             ymd: b
-    //         };
-    //             type: "get",
-    //             url: "add.php",
-    //             data: newItem
-    //         })
+	function addToCart(id,name,image,price,quantity,page){
+		var dataList = {
+			id: id,
+			name: name,
+			image: image,
+			price: price,
+			quantity: quantity,
+			page: page
+		}
+		
+		$.ajax({
+			type: "get",
+			url: "add.php",
+			data: dataList
+		}).then(function(e){
+			alert("商品已加入購物車！！");
+		})
+	}
 
 
 // 	$(function(){

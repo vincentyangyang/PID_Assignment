@@ -7,12 +7,15 @@
         $name = $_GET['name'];
         $image = $_GET['image'];
         $price = $_GET['price'];
-        $page = $_GET['page'];
         $quantity = $_GET['quantity'];
+        $page = $_GET['page'];
+        
+        $count = count($_SESSION['carts']);
+
 
         if ($page == 'cart'){
-            $count = count($_SESSION['carts']);
             for($i=0;$i<=$count;$i++){
+                echo $i;
                 if($_SESSION['carts'][$i][0] == $id){
                     if($quantity == 0){
                         unset($_SESSION['carts'][$i]);
@@ -23,7 +26,7 @@
                 break;
                 }
             }
-            header("Location: cart.php");
+            // header("Location: cart.php");
             exit();
         }
 
@@ -38,6 +41,7 @@
         for($i=0;$i<=$count;$i++){
             if($_SESSION['carts'][$i][0] == $id){
                 $_SESSION['carts'][$i][4] += 1;
+                $flag = 1;
                 break;
             }
         }
@@ -49,8 +53,64 @@
             array_push($_SESSION['carts'],$item);
         }
 
-        header("Location: goodsList.php");
 
+        // header("Location: goodsList.php");
+
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if (isset($_POST['authority'])){
+            $admin = $_POST['admin'];
+            $admin_pass = $_POST['pass'];
+        
+        
+            $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
+            $db->exec("SET CHARACTER SET utf8");
+     
+            $sth = $db->prepare("select * from admin where admin = :admin and password = :pass");
+        
+            $sth->bindParam("admin", $admin, PDO::PARAM_STR, 50);
+            $sth->bindParam("pass", $admin_pass, PDO::PARAM_STR, 50);
+        
+            $sth->execute();
+        
+            $row = $sth->fetch();
+        
+            if(!empty($row)){
+                    $_SESSION["admin"] = $admin;
+                    echo 'success';
+            }else{
+                echo 'fail';
+            }
+        }else{
+            $acc = $_POST['admin'];
+            $pass = $_POST['pass'];
+        
+        
+            $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
+            $db->exec("SET CHARACTER SET utf8");
+     
+            $sth = $db->prepare("select * from customers where admin = :admin and password = :pass");
+        
+            $sth->bindParam("admin", $acc, PDO::PARAM_STR, 50);
+            $sth->bindParam("pass", $pass, PDO::PARAM_STR, 50);
+        
+            $sth->execute();
+        
+            $row = $sth->fetch();
+        
+            if(!empty($row)){
+                if ($row['Authority'] == 1){
+                    $_SESSION["login"] = $acc;
+                    $_SESSION["id"] = $row['cId'];
+                    echo 'success';
+                }else{
+                    echo 'no Authority';
+                } 
+            }else{
+                echo 'fail';
+            }
+        }
     }
 
 

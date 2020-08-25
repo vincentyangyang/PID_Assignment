@@ -26,15 +26,24 @@ create table Orders(
 create table OrderItem(
     oId int not null,
     cId int not null,
-    name varchar(50) not null,
+    name varchar(150) not null,
     quantity int not null,
     sum int not null
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 insert into goods(name,price,description,image)
-values('DELL XPS15-9500-P1545STW銀 15吋筆電 i5/8G/512G/GTX1650Ti/W10專業版',70900,'處理器CPU：10th Generation Intel Core i5 10300H (8MB Cache, up to 4.5 GHz, 4 cores)\n
-隨機記憶體種類：8GB DDR4 Dual Channel SDRAM at 2933MHz(4Gx2)\n
-顯示晶片：NVIDIA GeForce GTX 1650 Ti 4GB GDDR6\n
-硬碟容量/轉速：512GB PCIe 3 x4 SSD\n
-螢幕尺寸：15.6吋FHD\n
-螢幕解析度：(1920 x 1200) InfinityEdge display 500-nits 100%sRGB\n','2.jpeg');
+values('ACER 宏碁 Swift 3 SF314 57 57FV I5-1035G1 8G 512GB 灰 14吋 窄邊框筆電',23900,'◆ 作業系統：WIN10<br>
+◆ 處理器CPU：Intel® Core™ i5-1035G1(1.00 GHz/3.60 GHz)<br>
+◆ 顯示晶片：Intel UHD Graphics<br>
+◆ 記憶體(實際出貨)：8G DDR4 Onboard<br>
+◆ 記憶體支援容量(總插槽數量/總容量)： 1 / 12G<br>
+◆ 螢幕LCD：14" FHD  IPS 霧面<br>
+◆ 解析度：1920x1080<br>
+◆ 儲存/硬碟：512GB PCIe SSD<br>','3.jpeg');
+
+
+create table admin(
+    cId int primary key auto_increment,
+    admin varchar(15) not null,
+    password varchar(15) not null,
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
