@@ -5,6 +5,12 @@
     $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
     $db->exec("SET CHARACTER SET utf8");
 
+    if (!isset($_SESSION["admin"])){
+      header("Location: admin_login.php");
+      exit();
+    }
+
+
     if ($_SERVER['REQUEST_METHOD'] == 'GET'){
         if(isset($_GET['name'])){   //新增
           $sth = $db->prepare("insert into Goods (name,price,image,description) values(:name,:price,:image,:description)");   
@@ -233,7 +239,7 @@
           data: dataList
         }).then(function(e){
           $('#form').trigger("reset");
-          window.location.replace("admin_goods.php")
+            window.location.replace("admin_goods.php")
         })
       }
 

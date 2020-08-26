@@ -1,7 +1,7 @@
 <?php
 session_start();
-
 header("content-type:text/html; charset=utf-8");
+
 
 $admin = $_SESSION['login'];
 
@@ -116,7 +116,7 @@ $db = null;
 
 	.pname{
 		margin-bottom: 10px;
-		height: 150px;
+		height: 100px;
 	}
 
 	.info >p{
@@ -152,8 +152,18 @@ $db = null;
 
 	.col3 {
 		padding-top: 5px;
-		border-top: 1px dashed #666666;
 		text-align: center;
+	}
+
+	#goodsName{
+		width: 210px;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 4;
+		-webkit-box-orient: vertical;
+		white-space: normal;
 	}
 
 
@@ -202,13 +212,18 @@ $db = null;
 
 	<?php while ($row = $result->fetch()): ?>
 
-		<div class='infoarea col-xs-4 col-sm-6 col-md-4 col-lg-3'>
+		<div class='infoarea col-xs-4 col-sm-6 col-md-4 col-lg-3' style="height:470px;">
 
-			<div style="height: 385px;margin: auto;width: 240px;padding:0 20px;border-style: solid;border-width:1px;border-color: #F5F5F5;">
+			<div style="margin: auto;width: 240px;padding:0 20px;border-style: solid;border-width:1px;border-color: #BDB76B;">
 				<ul>
 					<li class="img"><a href="goodsDetail.php?id=<?= $row['gId'] ?>"><img src="<?= $row['image'] ?>"/></a></li>
-					<li class="pname"><a href="goodsDetail.php?id=<?= $row['gId'] ?>">產品名稱：<?= $row['name'] ?></a></li>
+					<li class="pname">
+						<a href="goodsDetail.php?id=<?= $row['gId'] ?>">
+							<p id="goodsName"><?= $row['name'] ?></p>
+						</a>
+					</li>
 					<li>價格：<?= $row['price'] ?></li>
+					<hr style="margin-bottom: 15px; margin-top: 10px;">
 					<li class="col3" style="margin-top:3px;">
 						<a id="add" class="add_cart" href="javascript:void(0)" 	onclick="addToCart(<?= $row['gId'] ?>,'<?= $row['name'] ?>','<?= $row['image'] ?>','<?= $row['price'] ?>',0,'list')">
 
@@ -227,9 +242,9 @@ $db = null;
 </div>
 
 
-<div class="footer">
+<!-- <div class="footer">
     Dali E.so © 2020. All Rights Reserved
-</div>
+</div> -->
 
 <script type="text/javascript">
 

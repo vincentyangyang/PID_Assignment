@@ -2,6 +2,11 @@
     session_start();
     header("content-type:text/html; charset=utf-8");
 
+    if (!isset($_SESSION["admin"])){
+      header("Location: admin_login.php");
+      exit();
+    }
+
     $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
     $db->exec("SET CHARACTER SET utf8");
 
@@ -115,9 +120,9 @@
     <thead>
       <tr>
         <th>商品</th>
-        <th>名稱</th>
-        <th>價錢</th>
-        <th>說明</th>
+        <th style="width:510px;">名稱</th>
+        <th style="width:80px;">價錢</th>
+        <th style="width:450px;">說明</th>
       </tr>
     </thead>
 
@@ -138,7 +143,7 @@
         <td>
             <span class="float-right">
               <a class="edit btn btn-outline-success btn-sm" href="admin_edit_goods.php?id=<?= $row['gId'] ?>">修改</a>
-              <a class="edit btn btn-outline-success btn-sm" style="margin-top:5px;" href="javascript:void(0)" onclick="goDelete(<?= $row['gId'] ?>)"">刪除</a>
+              <a class="edit btn btn-outline-success btn-sm" href="javascript:void(0)" onclick="goDelete(<?= $row['gId'] ?>)"">刪除</a>
             </span>
         </td>
       </tr>
@@ -157,7 +162,7 @@
 <script>
 
     $('.goods').addClass("active");
-	  $('.member').removeClass("active");
+	  // $('.member').removeClass("active");
 
     function goDelete(id){
       alert(id);

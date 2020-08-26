@@ -2,6 +2,11 @@
     session_start();
     header("content-type:text/html; charset=utf-8");
 
+    if (!isset($_SESSION["admin"])){
+      header("Location: admin_login.php");
+      exit();
+    }
+
     if(isset($_GET['id'])){
 
         $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");

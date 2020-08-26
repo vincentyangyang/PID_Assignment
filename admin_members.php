@@ -2,6 +2,11 @@
     session_start();
     header("content-type:text/html; charset=utf-8");
 
+    if (!isset($_SESSION["admin"])){
+      header("Location: admin_login.php");
+      exit();
+    }
+
     $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
     $db->exec("SET CHARACTER SET utf8");
 
@@ -155,7 +160,7 @@
 <script>
 
       $('.member').addClass("active");
-	    $('.goods').removeClass("active");
+	    // $('.goods').removeClass("active");
 
       if ($('#status').html() === '正常'){
         $('#authority').html("停權");

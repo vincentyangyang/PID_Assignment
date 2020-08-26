@@ -5,18 +5,13 @@ session_start();
 if (isset($_GET["logout"]))
 {
   unset($_SESSION["admin"]);
-header("Location: admin_login.php");
+  header("Location: admin_login.php");
   exit();
 }
 
-if (isset($_SESSION["login"])){
-
+if (isset($_SESSION["admin"])){
     header("Location: admin_members.php");
     exit();
-
-}else{
-
-
 
 }
 
