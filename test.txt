@@ -39,7 +39,7 @@ values('ACER 宏碁 Swift 3 SF314 57 57FV I5-1035G1 8G 512GB 灰 14吋 窄邊框
 ◆ 記憶體支援容量(總插槽數量/總容量)： 1 / 12G<br>
 ◆ 螢幕LCD：14" FHD  IPS 霧面<br>
 ◆ 解析度：1920x1080<br>
-◆ 儲存/硬碟：512GB PCIe SSD<br>','3.jpeg');
+◆ 儲存/硬碟：512GB PCIe SSD','3.jpeg');
 
 
 create table admin(

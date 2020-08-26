@@ -8,10 +8,10 @@
     if ($_SERVER['REQUEST_METHOD'] == 'GET'){
         if(isset($_GET['name'])){   //新增
           $sth = $db->prepare("insert into Goods (name,price,image,description) values(:name,:price,:image,:description)");   
-          $sth->bindParam("name", $_GET['name'], PDO::PARAM_STR,10000);    
+          $sth->bindParam("name", $_GET['name'], PDO::PARAM_STR,1000);    
           $sth->bindParam("price", $_GET['price'], PDO::PARAM_INT);    
           $sth->bindParam("image", $_GET['image'], PDO::PARAM_STR,50);    
-          $sth->bindParam("description", $_GET['description'], PDO::PARAM_STR,100000);    
+          $sth->bindParam("description", $_GET['description'], PDO::PARAM_STR,1000);    
           $sth->execute();
 
         }else{  //自動填入資料
@@ -104,7 +104,7 @@
 
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
 
-  <a href="http://localhost:8000/pid/goodsList.php" class="navbar-brand">商城</a>
+  <a href="http://localhost:8000/PID_Assignment/admin_members.php" class="navbar-brand">管理</a>
 
   <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
       <span class="navbar-toggler-icon"></span>
@@ -123,12 +123,12 @@
       </li>
 
       <li class="nav-item">
-        <a href="login.php?logout=1" class="nav-link">登出</a>
+        <a href="admin_login.php?logout=1" class="nav-link">登出</a>
       </li>
 
     </ul>
 
-	<span id="guest"> <a href="admin_meembers.php" class="btn btn-outline-light btn-sm">你好！<?= $_SESSION['admin'] ?></a> </span>
+	<span id="guest"> <a href="admin_members.php" class="btn btn-outline-light btn-sm">你好！<?= $_SESSION['admin'] ?></a> </span>
   </div>
 </nav>
 
@@ -137,7 +137,7 @@
 <h2 align="center" style="padding-top:20px;">修改商品資訊</h2>
 
 <div style="margin-top: 50px;" class="container col-8">
-        <form method="get">
+        <form method="get" id="form">
 
 
             <div class="form-group row">
@@ -150,7 +150,7 @@
             <div class="form-group row">
                 <label for="price" class="col-4 col-form-label">價錢</label> 
                 <div class="col-8">
-                    <input id="price" name="price" type="text" class="form-control" value="<?= $row['price'] ?>">
+                    <input id="price" name="price" type="text" class="form-control" pattern="\d+" value="<?= $row['price'] ?>">
                 </div>
             </div>
 
@@ -164,14 +164,14 @@
             <div class="form-group row">
                 <label for="description" class="col-4 col-form-label">說明</label> 
                 <div class="col-8">
-                    <div id="description" class="textarea" contenteditable="true"><?= $row['description']?></div>
+                  <textarea name="" id="description" cols="45" rows="10"><?= $row['description']?></textarea>
                 </div>
             </div>
 
 
             <div class="form-group row">
                 <div class="offset-4 col-8">
-                    <a href="javascript:void(0)" onclick="goEdit(<?= $row['gId'] ?>)" class="btn btn-success">送出</a>
+                    <button id="submit" name="" value="OK" type="button" onclick="goEdit(<?= isset($row['gId']) ? ($row['gId']):0 ?>)" class="btn btn-success">送出</button>
                     <a href="admin_goods.php" class="btn btn-success">取消</a>
                 </div>
                 
@@ -191,43 +191,52 @@
     $('.goods').addClass("active");
 	  $('.member').removeClass("active");
 
-    function goEdit(){
-      var id = id;
-      var name = $('#name').val();
-      var price = $('#price').val();
-      var image = $('#image').val();
-      var description = $('#description').html();
-      var dataList = {
-        name: name,
-        price: price,
-        image: image,
-        description: description
-      }
-      $ajax({
-        type: "get",
-        url: "admin_edit_goods.php",
-        data: dataList
-      })
-    }
 
+    //修改資料
     function goEdit(id){
-      var id = id;
-      var name = $('#name').val();
-      var price = $('#price').val();
-      var image = $('#image').val();
-      var description = $('#description').html();
-      var dataList = {
-        id: id,
-        name: name,
-        price: price,
-        image: image,
-        description: description
+      if (id == 0){
+        var name = $('#name').val();
+        var price = $('#price').val();
+        var image = $('#image').val();
+        var description = $('#description').val();
+        var dataList = {
+          name: name,
+          price: price,
+          image: image,
+          description: description
+        }
+
+        $.ajax({
+          type: "get",
+          url: "admin_edit_goods.php",
+          data: dataList
+        }).then(function(e){
+          $('#form').trigger("reset");
+          alert("新增成功");
+        })
+      }else{
+        var id = id;
+        var name = $('#name').val();
+        var price = $('#price').val();
+        var image = $('#image').val();
+        var description = $('#description').val();
+        var dataList = {
+          id: id,
+          name: name,
+          price: price,
+          image: image,
+          description: description
+        }
+        $.ajax({
+          type: "post",
+          url: "admin_edit_goods.php",
+          data: dataList
+        }).then(function(e){
+          $('#form').trigger("reset");
+          window.location.replace("admin_goods.php")
+        })
       }
-      $ajax({
-        type: "post",
-        url: "admin_edit_goods.php",
-        data: dataList
-      })
+
     }
 
 

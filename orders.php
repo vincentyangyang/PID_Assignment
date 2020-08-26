@@ -2,6 +2,8 @@
     session_start();
     header("content-type:text/html; charset=utf-8");
 
+    $admin = $_SESSION['login'];
+
     $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
     $db->exec("SET CHARACTER SET utf8");
 
@@ -25,8 +27,84 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>     -->
+
+  <style>
+
+      body{
+          padding: 0;
+          margin: 0;
+      }
+
+
+      #page-container {
+        position: relative;
+        min-height: 100vh;
+      }
+
+
+      .navbar-nav{
+        margin-left: 60px;
+      }
+
+      #navbarCollapse{
+        position: relative;
+      }
+
+	  #guest{
+      position: absolute;
+      right: 50px;
+      color: white;
+	  }
+
+    .footer{
+        height: 30px;
+        color: #ffffff;
+        background: #c3c3c3;
+        text-align: center;
+        clear: both;
+        margin-bottom:2px;
+        padding-top: 4px;
+        padding: auto;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+      }
+  
+  </style>
+
+
 </head>
 <body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+
+  <a href="http://localhost:8000/PID_Assignment/goodsList.php" class="navbar-brand">商城</a>
+
+  <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+
+    <ul class="navbar-nav">
+
+      <li class="nav-item cart">
+        <a href="cart.php" class="nav-link">購物車</a>
+      </li>
+
+      <li class="nav-item list">
+        <a href="goodsList.php" class="nav-link">商品列表</a>
+      </li>
+
+      <li class="nav-item">
+        <a href="login.php?logout=1" class="nav-link">登出</a>
+      </li>
+
+    </ul>
+
+	<span id="guest"> <a href="orders.php" class="btn btn-outline-light btn-sm">你好！<?= $admin ?></a> </span>
+  </div>
+</nav>
 
 
 
@@ -70,6 +148,17 @@
   </table>
 
 </div>
+
+<div class="footer">
+    Dali E.so © 2020. All Rights Reserved
+</div>
+
+<script>
+
+  $('.list').addClass("active");
+	$('.cart').removeClass("active");
+
+</script>
 
 </body>
 </html>

@@ -74,7 +74,7 @@
 
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
 
-  <a href="http://localhost:8000/pid/goodsList.php" class="navbar-brand">商城</a>
+  <a href="http://localhost:8000/PID_Assignment/admin_members.php" class="navbar-brand">管理</a>
 
   <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
       <span class="navbar-toggler-icon"></span>
@@ -93,12 +93,12 @@
       </li>
 
       <li class="nav-item">
-        <a href="login.php?logout=1" class="nav-link">登出</a>
+        <a href="admin_login.php?logout=1" class="nav-link">登出</a>
       </li>
 
     </ul>
 
-	<span id="guest"> <a href="admin_meembers.php" class="btn btn-outline-light btn-sm">你好！<?= $_SESSION['admin'] ?></a> </span>
+	<span id="guest"> <a href="admin_members.php" class="btn btn-outline-light btn-sm">你好！<?= $_SESSION['admin'] ?></a> </span>
   </div>
 </nav>
 
@@ -107,7 +107,7 @@
 <h2 align="center" style="padding-top:20px;">商品資料</h2>
 
  <span class="float-right" >
-    <a class="btn btn-info" href="goodsList.php">首頁</a>
+    <a class="btn btn-info" href="admin_edit_goods.php">新增</a>
  </span>
              
   <table style="margin-top: 50px;" class="table table-hover table-striped">

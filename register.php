@@ -1,26 +1,5 @@
 <?php
 
-if (isset($_POST['submit'])){
-    $admin = $_POST['admin'];
-    $pass = $_POST['pass'];
-    $email = $_POST['email'];
-    $birthday = $_POST['birthday'];
-    $phone = $_POST['phone'];
-
-
-    $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
-    $db->exec("SET CHARACTER SET utf8");
-    echo($phone);
-    $sth = $db->prepare("insert into customers (admin, password, email, birthday, phone) values (:admin, :pass, :email, :birthday, :phone)");
-
-    $sth->bindParam("admin", $admin, PDO::PARAM_STR, 50);
-    $sth->bindParam("pass", $pass, PDO::PARAM_STR, 50);
-    $sth->bindParam("email", $email, PDO::PARAM_STR, 50);
-    $sth->bindParam("birthday", $birthday, PDO::PARAM_STR, 50);
-    $sth->bindParam("phone", $phone, PDO::PARAM_INT);
-
-    $sth->execute();
-}
 
 ?>
 
@@ -32,9 +11,11 @@ if (isset($_POST['submit'])){
     <title>用戶註冊</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>     -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <style>
       body{
@@ -67,6 +48,10 @@ if (isset($_POST['submit'])){
         width:100%;
       }
 
+      #fail{
+          color: red;
+      }
+
     </style>
 
 </head>
@@ -74,7 +59,7 @@ if (isset($_POST['submit'])){
 <body>
   <nav class="navbar navbar-expand-md navbar-dark bg-primary">
 
-  <a href="http://localhost:8000/pid/register.php" class="navbar-brand">商城</a>
+  <a href="http://localhost:8000/PID_Assignment/goodsList.php" class="navbar-brand">商城</a>
 
   <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
     <span class="navbar-toggler-icon"></span>
@@ -143,7 +128,7 @@ if (isset($_POST['submit'])){
 
 <div class="form-group row">
     <div class="offset-4 col-8">
-        <button name="submit" value="OK" type="submit" class="btn btn-success">註冊</button>
+        <button id="register" name="submit" value="OK" type="button" class="btn btn-success">註冊</button>
         <input type="button" id="cancel" name="cancel" value="清除" class="btn btn-success"></button>
     </div>
     
@@ -151,6 +136,8 @@ if (isset($_POST['submit'])){
 
 
 </form>
+
+<div id="fail" class="text-center"> </div>
 
 </div>
 
@@ -168,22 +155,50 @@ if (isset($_POST['submit'])){
         $('.form-control').val("");
     });
 
+    $('#register').on('click',function(){
+      // var acc = new RegExp('\w{7,}');
+      var acc = /\w{7,}/;
+      // var ps = new RegExp('\w{7,}');
+      var ps = /\w{7,}/;
+      // var mail = new RegExp('\w+([.-]\w+)*@\w+([.-]\w+)+');
+      var mail = /\w+([.-]\w+)*@\w+([.-]\w+)+/;
+      // var bd = new RegExp('\d{4}-\d{2}-\d{2}');
+      var bd = /\d{4}-\d{2}-\d{2}/;
+      // var tel = new RegExp('\d{10}');
+      var tel = /\d{10}/;
 
-    // $(function(){
-    //   function footerPosition(){
-    //       $("footer").removeClass("fixed-bottom");
-    //       var contentHeight = document.body.scrollHeight,
-    //           winHeight = window.innerHeight;
-    //       if(!(contentHeight > winHeight)){
+    if (acc.test($('#admin').val()) & acc.test($('#pass').val()) 
+        & bd.test($('#birthday').val()) & mail.test($('#email').val())
+        & tel.test($('#phone').val())){
+          
+        var dataList = {
+        admin: $('#admin').val(),
+        pass: $('#pass').val(),
+        email: $('#email').val(),
+        birthday:$('#birthday').val(),
+        phone: $('#phone').val(),
+        register: "register"
+        }
+        $.ajax({
+          type: "POST",
+          url: "add.php",
+          data: dataList,
+          success: function(e){
+            if(e == 'exist'){
+              $('#fail').html("帳號已存在！！");
+            }else{
+              window.location.replace("login.php");
+            }
+          }
+        })
 
-    //           $("footer").addClass("fixed-bottom");
-    //       } else {
-    //           $("footer").removeClass("fixed-bottom");
-    //       }
-    //   }
-    //   footerPosition();
-    //   $(window).resize(footerPosition);
-    // });
+      }else{
+        $('#fail').html("資料格式錯誤！！");
+      }
+
+
+    })
+
 
   </script>
 
