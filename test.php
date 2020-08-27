@@ -1,35 +1,62 @@
 <?php
 
+header("content-type:text/html; charset=utf-8");
 
+$db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
+$db->exec("SET CHARACTER SET utf8");
 
-?>
+if(isset($_POST['insert'])){
+    if($_FILES["file"]["error"] == 0){
+        if(move_uploaded_file($_FILES["file"]["tmp_name"],"./image/".$_FILES["file"]["name"])){
+            if(file_exists("./image/" . $_FILES["file"]["name"])){
+                echo "exist";
+            }else{
+                $imageName  = $_FILES["file"]["name"];
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>     -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
-<body>
-    <p id="p">aaaaaaaa1231</p>
-</body>
+                $sth = $db->prepare("insert into Goods (name,price,image,description) values(:name,:price,:image,:description)");   
+                $sth->bindParam("name", $_POST['name'], PDO::PARAM_STR,1000);    
+                $sth->bindParam("price", $_POST['price'], PDO::PARAM_INT);    
+                $sth->bindParam("image", $imageName, PDO::PARAM_STR,50);    
+                $sth->bindParam("description", $_POST['description'], PDO::PARAM_STR,10000);
 
-<script>
-var acc = new RegExp('\w{7,}');
-var p = $('#p').text();
+                $sth->execute();
+            }
+        }
+    }
+}
 
-if(!acc.test(p)){
-    alert('num');
+if(isset($_POST['update'])){
+    if($_FILES["file"]["error"] == 0){
+        if(move_uploaded_file($_FILES["file"]["tmp_name"],"./image/".$_FILES["file"]["name"])){
+            // if(file_exists("./image/" . $_FILES["file"]["name"])){
+            //     echo "exist";
+            // }else{
+                $imageName  = $_FILES["file"]["name"];
+                
+                $sth = $db->prepare("update Goods set name = :name,price = :price,image = :image,description = :description where gId = :gId");
+                $sth->bindParam("gId", $_POST['id'], PDO::PARAM_INT);    
+                $sth->bindParam("name", $_POST['name'], PDO::PARAM_STR,10000);    
+                $sth->bindParam("price", $_POST['price'], PDO::PARAM_INT);    
+                $sth->bindParam("image", $imageName, PDO::PARAM_STR,50);    
+                $sth->bindParam("description", $_POST['description'], PDO::PARAM_STR,100000); 
+
+                $sth->execute();
+            // }
+        }
+    }
+}
+
+if(isset($_POST['change'])){
+    if($_FILES["file"]["error"] == 0){
+        if(move_uploaded_file($_FILES["file"]["tmp_name"],"./storage/".$_FILES["file"]["name"])){ 
+                echo $_FILES["file"]["name"];
+        }
+    }
 }
 
 
-</script>
 
-</html>
+
+
+
+?>

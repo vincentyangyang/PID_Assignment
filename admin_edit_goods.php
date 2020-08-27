@@ -11,30 +11,14 @@
     }
 
 
-    if ($_SERVER['REQUEST_METHOD'] == 'GET'){
-        if(isset($_GET['name'])){   //新增
-          $sth = $db->prepare("insert into Goods (name,price,image,description) values(:name,:price,:image,:description)");   
-          $sth->bindParam("name", $_GET['name'], PDO::PARAM_STR,1000);    
-          $sth->bindParam("price", $_GET['price'], PDO::PARAM_INT);    
-          $sth->bindParam("image", $_GET['image'], PDO::PARAM_STR,50);    
-          $sth->bindParam("description", $_GET['description'], PDO::PARAM_STR,1000);    
-          $sth->execute();
+    if ($_SERVER['REQUEST_METHOD'] == 'GET'){     //自動填入資料
 
-        }else{  //自動填入資料
-            $sth = $db->prepare("select * from Goods where gId = :gId");
-            $sth->bindParam("gId", $_GET['id'], PDO::PARAM_INT);    
-            $sth->execute();
-
-            $row = $sth->fetch();
-        }
-    }elseif($_SERVER['REQUEST_METHOD'] == 'POST'){  //修改
-        $sth = $db->prepare("update Goods set name = :name,price = :price,image = :image,description = :description where gId = :gId");
-        $sth->bindParam("gId", $_POST['id'], PDO::PARAM_INT);    
-        $sth->bindParam("name", $_POST['name'], PDO::PARAM_STR,10000);    
-        $sth->bindParam("price", $_POST['price'], PDO::PARAM_INT);    
-        $sth->bindParam("image", $_POST['image'], PDO::PARAM_STR,50);    
-        $sth->bindParam("description", $_POST['description'], PDO::PARAM_STR,100000);    
+        $sth = $db->prepare("select * from Goods where gId = :gId");
+        $sth->bindParam("gId", $_GET['id'], PDO::PARAM_INT);    
         $sth->execute();
+
+        $row = $sth->fetch();
+
     }elseif($_SERVER['REQUEST_METHOD'] == 'DELETE'){   //刪除
         $sth = $db->prepare("delete from Goods where gId = :gId");
         $sth->bindParam("gId", $_GET['id'], PDO::PARAM_INT);    
@@ -158,12 +142,16 @@
                 <div class="col-8">
                     <input id="price" name="price" type="text" class="form-control" pattern="\d+" value="<?= $row['price'] ?>">
                 </div>
+                <div id="error" class='text-center col-11' style="display:none;color:red;font-size:13px;">價錢必須為數字且不為0</div>
             </div>
 
             <div class="form-group row">
-                <label for="image" class="col-4 col-form-label">圖片檔名</label> 
+                <label for="image" class="col-2 col-form-label" style="height:50px;padding-right: 0px;">圖片
+                  <p style="color:blue;font-size:10px;">(點擊此處以上傳)</p>
+                </label> 
                 <div class="col-8">
-                    <input id="image" name="image" type="text" class="form-control" value="<?= $row['image'] ?>">
+                    <img id="photo" src="image/<?= isset($row['image']) ? $row['image']:'none.jpeg' ?>" class="col-12" style="border-style: outset;margin-left: 122px;"  >
+                    <input id="image" name="image" style="display: none;" accept="image/*" type="file" onchange="setImage()" class="form-control" value="image/<?= $row['image'] ?>">
                 </div>
             </div>
 
@@ -200,49 +188,102 @@
 
     //修改資料
     function goEdit(id){
-      if (id == 0){
-        var name = $('#name').val();
-        var price = $('#price').val();
-        var image = $('#image').val();
-        var description = $('#description').val();
-        var dataList = {
-          name: name,
-          price: price,
-          image: image,
-          description: description
-        }
+      if(/[^0]\d+/.test($('#price').val())){
+          if (id == 0){
+            if(typeof $('#image').prop('files')[0] !== "undefined"){
+              var name = $('#name').val();
+              var price = $('#price').val();
+              var image = $('#image').val();
+              var description = $('#description').val();
+              var file_data = $('#image').prop('files')[0];   //取得上傳檔案屬性
+              var form_data = new FormData();  //建構new FormData()
 
-        $.ajax({
-          type: "get",
-          url: "admin_edit_goods.php",
-          data: dataList
-        }).then(function(e){
-          $('#form').trigger("reset");
-          alert("新增成功");
-        })
+              form_data.append('name', name);
+              form_data.append('price', price);
+              form_data.append('image', image);
+              form_data.append('description', description);
+              form_data.append('file', file_data);
+              form_data.append('insert', "insert");
+              
+
+              $.ajax({
+                type: "post",
+                url: "test.php",
+                contentType: false,
+                cache: false,
+                processData: false,
+                data: form_data
+              }).then(function(e){
+                if(e == "exist"){
+                  $("#photo").prop("src","image/none.jpeg");
+                  alert("此圖片名稱已存在！！");
+                }else{
+                  alert(e);
+                  $("#photo").prop("src","image/none.jpeg");
+                  $('#form').trigger("reset");
+                  alert("新增成功");
+                }
+
+              })
+            }else{
+              alert("請選擇圖片！！");
+            }
+
+          }
+          else{
+              var name = $('#name').val();
+              var price = $('#price').val();
+              var image = $('#image').val();
+              var description = $('#description').val();
+              var file_data = $('#image').prop('files')[0];   //取得上傳檔案屬性
+              var form_data = new FormData();  //建構new FormData()
+
+              form_data.append('id', id);
+              form_data.append('name', name);
+              form_data.append('price', price);
+              form_data.append('image', image);
+              form_data.append('description', description);
+              form_data.append('file', file_data);
+              form_data.append('update', "update");
+
+            $.ajax({
+              type: "post",
+              url: "test.php",
+              contentType: false,
+              cache: false,
+              processData: false,
+              data: form_data
+            }).then(function(e){
+              $('#form').trigger("reset");
+              window.location.replace("admin_goods.php")
+            })
+          }
+
+
       }else{
-        var id = id;
-        var name = $('#name').val();
-        var price = $('#price').val();
-        var image = $('#image').val();
-        var description = $('#description').val();
-        var dataList = {
-          id: id,
-          name: name,
-          price: price,
-          image: image,
-          description: description
-        }
-        $.ajax({
-          type: "post",
-          url: "admin_edit_goods.php",
-          data: dataList
-        }).then(function(e){
-          $('#form').trigger("reset");
-            window.location.replace("admin_goods.php")
-        })
+        $("#error").show();
       }
+    }
 
+    // ----------------------------------
+
+    function setImage(){
+      var file_data = $('#image').prop('files')[0];   //取得上傳檔案屬性
+        var form_data = new FormData();  //建構new FormData()
+        form_data.append('file', file_data);  //吧物件加到file後面
+        form_data.append('change', "change");  //吧物件加到file後面
+            
+        $.ajax({
+            type: "post",
+            url: "test.php",
+            contentType: false,
+            cache: false,
+            processData: false,
+            data: form_data,
+            success: function(e){
+                $("#photo").prop("src","storage/"+e);
+            }
+        })
     }
 
 

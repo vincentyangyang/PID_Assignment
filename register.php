@@ -48,8 +48,13 @@
         width:100%;
       }
 
-      #fail{
-          color: red;
+      .fail{
+        font-size: 13px;
+        color: red;
+      }
+
+      #exist{
+        color: red;
       }
 
     </style>
@@ -89,38 +94,38 @@
 <form method="post">
 
 
-<div class="form-group row">
+<div id="divadmin" class="form-group row">
     <label for="admin" class="col-4 col-form-label"><span class="float-right"">帳號</span></label> 
-    <div class="col-4">
-        <input id="admin" name="admin" type="text" class="form-control" value="" placeholder="請輸入至少7碼的英文或數字" pattern="\w{7,}">
+    <div class="col-8">
+        <input id="admin" name="admin" type="text" class="form-control col-5" value="" placeholder="請輸入至少7碼的英文或數字" pattern="\w{7,}">
     </div>
 </div>
 
-<div class="form-group row">
-    <label for="pass" class="col-4 col-form-label float-right"><span class="float-right">密碼</span></label> 
-    <div class="col-4">
-        <input id="pass" name="pass" type="text" class="form-control" value="" placeholder="請輸入至少7碼的英文或數字" pattern="\w{7,}">
+<div id="divpass" class="form-group row">
+    <label for="pass" class="col-4 col-form-label"><span class="float-right">密碼</span></label> 
+    <div class="col-8">
+        <input id="pass" name="pass" type="text" class="form-control col-5" value="" placeholder="請輸入至少7碼的英文或數字" pattern="\w{7,}">
     </div>
 </div>
 
-<div class="form-group row">
+<div id="divemail" class="form-group row">
     <label for="email" class="col-4 col-form-label"><span class="float-right">信箱</span></label> 
-    <div class="col-4">
-        <input id="email" name="email" type="text" class="form-control" placeholder="xxx@xxx.com" pattern="\w+([.-]\w+)*@\w+([.-]\w+)+" value="">
+    <div class="col-8">
+        <input id="email" name="email" type="text" class="form-control col-5" placeholder="xxx@xxx.com" pattern="\w+([.-]\w+)*@\w+([.-]\w+)+" value="">
     </div>
 </div>
 
-<div class="form-group row">
+<div id="divbirthday" class="form-group row">
     <label for="birthday" class="col-4 col-form-label"><span class="float-right">生日</span></label> 
-    <div class="col-4">
-        <input id="birthday" name="birthday" type="text" class="form-control" placeholder="2000-01-01" value="" pattern="\d{4}-\d{2}-\d{2}">
+    <div class="col-8">
+        <input id="birthday" name="birthday" type="text" class="form-control col-5" placeholder="2000-01-01" value="" pattern="\d{4}-\d{2}-\d{2}">
     </div>
 </div>
 
-<div class="form-group row">
+<div id="divphone" class="form-group row">
     <label for="phone" class="col-4 col-form-label"><span class="float-right">手機</span></label> 
-    <div class="col-4">
-        <input id="phone" name="phone" type="text" class="form-control" value="" placeholder="0912345678" pattern="\d{10}">
+    <div class="col-8">
+        <input id="phone" name="phone" type="text" class="form-control col-5" value="" placeholder="0912345678" pattern="\d{10}">
     </div>
 </div>
 
@@ -137,65 +142,76 @@
 
 </form>
 
-<div id="fail" class="text-center"> </div>
-
-</div>
+<div id="exist" class='text-center'></div>
 
 
 <div class="footer fixed-bottom">
-  Ching Yo© 2020. All Rights Reserved
+  Chung Yo© 2020. All Rights Reserved
   
 </div>
 
 
 
-  <script type="text/javascript">
+<script type="text/javascript">
   
     $('#cancel').on('click',function(){
         $('.form-control').val("");
     });
 
     $('#register').on('click',function(){
-      // var acc = new RegExp('\w{7,}');
       var acc = /\w{7,}/;
-      // var ps = new RegExp('\w{7,}');
-      var ps = /\w{7,}/;
-      // var mail = new RegExp('\w+([.-]\w+)*@\w+([.-]\w+)+');
       var mail = /\w+([.-]\w+)*@\w+([.-]\w+)+/;
-      // var bd = new RegExp('\d{4}-\d{2}-\d{2}');
       var bd = /\d{4}-\d{2}-\d{2}/;
-      // var tel = new RegExp('\d{10}');
       var tel = /\d{10}/;
 
-    if (acc.test($('#admin').val()) & acc.test($('#pass').val()) 
-        & bd.test($('#birthday').val()) & mail.test($('#email').val())
-        & tel.test($('#phone').val())){
-          
+      var admin = $('#admin').val();
+      var pass = $('#pass').val();
+      var email = $('#email').val();
+      var birthday = $('#birthday').val();
+      var phone = $('#phone').val();
+
+      var format = [acc.test(admin),acc.test(pass),mail.test(email),bd.test(birthday),tel.test(phone)];
+      var column = ["admin","pass","email","birthday","phone"];
+      var columnName = ["帳號","密碼","信箱","生日","電話"];
+
+      $(".fail").remove();
+
+      var i;
+      var flag = 0;
+
+      for(i=0;i<5;i++){
+        if (format[i] == false){
+          flag = 1;
+          var divName = "div"+column[i];
+          $("#"+divName).append("<div class='text-center col-10 fail'>"+columnName[i]+"格式錯誤！！</div>");
+        }
+      }
+      
+
+      if(flag == 0){
+
         var dataList = {
-        admin: $('#admin').val(),
-        pass: $('#pass').val(),
-        email: $('#email').val(),
-        birthday:$('#birthday').val(),
-        phone: $('#phone').val(),
+        admin: admin,
+        pass: pass,
+        email: email,
+        birthday: birthday,
+        phone: phone,
         register: "register"
         }
+
         $.ajax({
           type: "POST",
           url: "add.php",
           data: dataList,
           success: function(e){
             if(e == 'exist'){
-              $('#fail').html("帳號已存在！！");
+              $('#exist').html("帳號已存在！！");
             }else{
               window.location.replace("login.php");
             }
           }
         })
-
-      }else{
-        $('#fail').html("資料格式錯誤！！");
       }
-
 
     })
 

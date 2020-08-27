@@ -126,7 +126,7 @@ $db = null;
 <table width="100%" border="0" align="center">
     <tr>
 			<td width="40%" align="right">
-				<div><img src="<?= $row['image'] ?>" width="360px" height="360px"/></div>
+				<div><img src="image/<?= $row['image'] ?>" width="360px" height="360px"/></div>
         <br>
 			</td>
 
@@ -144,7 +144,7 @@ $db = null;
 
 				<div style="float:left; margin-left:150px; margin-top:40px;">
 					<a class="add_cart" href="javascript:void(0)" 	onclick="addToCart(<?= $row['gId'] ?>,'<?= $row['name'] ?>','<?= $row['image'] ?>','<?= $row['price'] ?>',0,'list')">
-						<img src="add_to_cart.png" style="width:185px; height:50px;"></a>
+						<img src="image/add_to_cart.png" style="width:185px; height:50px;"></a>
 				</div>
 			</td>
 		</tr>

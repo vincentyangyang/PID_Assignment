@@ -135,7 +135,7 @@
     ?>
 
       <tr>
-        <td><img src="<?= $row['image'] ?>" style="width:210px;height:210px;" alt=""></td>
+        <td><img src="image/<?= $row['image'] ?>" style="width:210px;height:210px;" alt=""></td>
         <td><?= $row['name'] ?></td>
         <td><?= $row['price'] ?></td>
         <td><?= $row['description'] ?></td>
@@ -162,10 +162,8 @@
 <script>
 
     $('.goods').addClass("active");
-	  // $('.member').removeClass("active");
 
     function goDelete(id){
-      alert(id);
       $.ajax({
         type: "delete",
         url: "admin_edit_goods.php?id="+id,

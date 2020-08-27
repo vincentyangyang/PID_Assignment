@@ -161,7 +161,7 @@ $db = null;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		display: -webkit-box;
-		-webkit-line-clamp: 4;
+		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
 		white-space: normal;
 	}
@@ -206,7 +206,7 @@ $db = null;
   </div>
 </nav>
 
-<h2 align="center" style="padding-top:20px;">商品列表</h2>
+<h2 align="center" style="padding-top:20px; margin-bottom:22px;">商品列表</h2>
 
 <div class='info'>
 
@@ -214,20 +214,20 @@ $db = null;
 
 		<div class='infoarea col-xs-4 col-sm-6 col-md-4 col-lg-3' style="height:470px;">
 
-			<div style="margin: auto;width: 240px;padding:0 20px;border-style: solid;border-width:1px;border-color: #BDB76B;">
+			<div style="height:380px;margin: auto;width: 240px;padding:0 20px;border-style: solid;border-width:1px;border-color: #BDB76B;">
 				<ul>
-					<li class="img"><a href="goodsDetail.php?id=<?= $row['gId'] ?>"><img src="<?= $row['image'] ?>"/></a></li>
-					<li class="pname">
+					<li class="img"><a href="goodsDetail.php?id=<?= $row['gId'] ?>"><img src="image/<?= $row['image'] ?>"/></a></li>
+					<li class="pname" style="margin-bottom:0; height:80px;">
 						<a href="goodsDetail.php?id=<?= $row['gId'] ?>">
 							<p id="goodsName"><?= $row['name'] ?></p>
 						</a>
 					</li>
 					<li>價格：<?= $row['price'] ?></li>
-					<hr style="margin-bottom: 15px; margin-top: 10px;">
+					<hr style="margin-bottom: 8px; margin-top: 8px;">
 					<li class="col3" style="margin-top:3px;">
 						<a id="add" class="add_cart" href="javascript:void(0)" 	onclick="addToCart(<?= $row['gId'] ?>,'<?= $row['name'] ?>','<?= $row['image'] ?>','<?= $row['price'] ?>',0,'list')">
 
-							<img src="add_to_cart.png" style="width:110px; height:28px;">
+							<img src="image/add_to_cart.png" style="width:110px; height:28px;">
 						</a>
 					</li>
 				</ul>
