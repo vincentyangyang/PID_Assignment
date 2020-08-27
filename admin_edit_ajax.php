@@ -7,10 +7,10 @@ $db->exec("SET CHARACTER SET utf8");
 
 if(isset($_POST['insert'])){
     if($_FILES["file"]["error"] == 0){
-        if(move_uploaded_file($_FILES["file"]["tmp_name"],"./image/".$_FILES["file"]["name"])){
-            if(file_exists("./image/" . $_FILES["file"]["name"])){
-                echo "exist";
-            }else{
+        if(file_exists("./image/" . $_FILES["file"]["name"])){
+            echo "exist";
+        }else{
+            if(move_uploaded_file($_FILES["file"]["tmp_name"],"./image/".$_FILES["file"]["name"])){
                 $imageName  = $_FILES["file"]["name"];
 
                 $sth = $db->prepare("insert into Goods (name,price,image,description) values(:name,:price,:image,:description)");   
@@ -27,23 +27,34 @@ if(isset($_POST['insert'])){
 
 if(isset($_POST['update'])){
     if($_FILES["file"]["error"] == 0){
-        if(move_uploaded_file($_FILES["file"]["tmp_name"],"./image/".$_FILES["file"]["name"])){
-            // if(file_exists("./image/" . $_FILES["file"]["name"])){
-            //     echo "exist";
-            // }else{
-                $imageName  = $_FILES["file"]["name"];
-                
+        $sth = $db->prepare("select * from Goods where gId = :gId");
+        $sth->bindParam("gId", $_POST['id'], PDO::PARAM_INT);    
+        $sth->execute();
+
+        $row = $sth->fetch();
+        if(move_uploaded_file($_FILES["file"]["tmp_name"],"./image/".$row['image'])){
+
                 $sth = $db->prepare("update Goods set name = :name,price = :price,image = :image,description = :description where gId = :gId");
                 $sth->bindParam("gId", $_POST['id'], PDO::PARAM_INT);    
                 $sth->bindParam("name", $_POST['name'], PDO::PARAM_STR,10000);    
                 $sth->bindParam("price", $_POST['price'], PDO::PARAM_INT);    
-                $sth->bindParam("image", $imageName, PDO::PARAM_STR,50);    
+                $sth->bindParam("image", $row['image'], PDO::PARAM_STR,50);    
                 $sth->bindParam("description", $_POST['description'], PDO::PARAM_STR,100000); 
 
                 $sth->execute();
-            // }
         }
     }
+}
+
+
+if(isset($_POST['updateImageNoChange'])){
+    $sth = $db->prepare("update Goods set name = :name,price = :price,description = :description where gId = :gId");
+    $sth->bindParam("gId", $_POST['id'], PDO::PARAM_INT);    
+    $sth->bindParam("name", $_POST['name'], PDO::PARAM_STR,10000);    
+    $sth->bindParam("price", $_POST['price'], PDO::PARAM_INT);       
+    $sth->bindParam("description", $_POST['description'], PDO::PARAM_STR,100000); 
+
+    $sth->execute();
 }
 
 if(isset($_POST['change'])){

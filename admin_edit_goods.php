@@ -135,6 +135,7 @@
                 <div class="col-8">
                     <input id="name" name="name" type="text" class="form-control" value="<?= $row['name'] ?>">
                 </div>
+                <div id="errorName" class='text-center col-11' style="display:none;color:red;font-size:13px;">商品名稱不得為空</div>
             </div>
 
             <div class="form-group row">
@@ -142,7 +143,7 @@
                 <div class="col-8">
                     <input id="price" name="price" type="text" class="form-control" pattern="\d+" value="<?= $row['price'] ?>">
                 </div>
-                <div id="error" class='text-center col-11' style="display:none;color:red;font-size:13px;">價錢必須為數字且不為0</div>
+                <div id="errorPrice" class='text-center col-11' style="display:none;color:red;font-size:13px;">價錢必須為數字且不為0</div>
             </div>
 
             <div class="form-group row">
@@ -151,7 +152,7 @@
                 </label> 
                 <div class="col-8">
                     <img id="photo" src="image/<?= isset($row['image']) ? $row['image']:'none.jpeg' ?>" class="col-12" style="border-style: outset;margin-left: 122px;"  >
-                    <input id="image" name="image" style="display: none;" accept="image/*" type="file" onchange="setImage()" class="form-control" value="image/<?= $row['image'] ?>">
+                    <input id="image" name="image" style="display: none;" accept="image/*" type="file" onchange="setImage()" class="form-control" value="image/<?= isset($row['image']) ? $row['image']:'none.jpeg' ?>">
                 </div>
             </div>
 
@@ -188,7 +189,8 @@
 
     //修改資料
     function goEdit(id){
-      if(/[^0]\d+/.test($('#price').val())){
+      if($('#name').val() !== ""){
+        if(/[^0]\d+/.test($('#price').val())){
           if (id == 0){
             if(typeof $('#image').prop('files')[0] !== "undefined"){
               var name = $('#name').val();
@@ -208,17 +210,15 @@
 
               $.ajax({
                 type: "post",
-                url: "test.php",
+                url: "admin_edit_ajax.php",
                 contentType: false,
                 cache: false,
                 processData: false,
                 data: form_data
               }).then(function(e){
                 if(e == "exist"){
-                  $("#photo").prop("src","image/none.jpeg");
                   alert("此圖片名稱已存在！！");
                 }else{
-                  alert(e);
                   $("#photo").prop("src","image/none.jpeg");
                   $('#form').trigger("reset");
                   alert("新增成功");
@@ -231,11 +231,11 @@
 
           }
           else{
+            if(typeof $('#image').prop('files')[0] == "undefined"){
               var name = $('#name').val();
               var price = $('#price').val();
               var image = $('#image').val();
               var description = $('#description').val();
-              var file_data = $('#image').prop('files')[0];   //取得上傳檔案屬性
               var form_data = new FormData();  //建構new FormData()
 
               form_data.append('id', id);
@@ -243,26 +243,54 @@
               form_data.append('price', price);
               form_data.append('image', image);
               form_data.append('description', description);
-              form_data.append('file', file_data);
-              form_data.append('update', "update");
+              form_data.append('updateImageNoChange', "updateImageNoChange");
 
-            $.ajax({
-              type: "post",
-              url: "test.php",
-              contentType: false,
-              cache: false,
-              processData: false,
-              data: form_data
-            }).then(function(e){
-              $('#form').trigger("reset");
-              window.location.replace("admin_goods.php")
-            })
+              $.ajax({
+                type: "post",
+                url: "admin_edit_ajax.php",
+                contentType: false,
+                cache: false,
+                processData: false,
+                data: form_data
+              }).then(function(e){
+                window.location.replace("admin_goods.php")
+              })
+            }else{
+                var name = $('#name').val();
+                var price = $('#price').val();
+                var image = $('#image').val();
+                var description = $('#description').val();
+                var file_data = $('#image').prop('files')[0];   //取得上傳檔案屬性
+                var form_data = new FormData();  //建構new FormData()
+    
+                form_data.append('id', id);
+                form_data.append('name', name);
+                form_data.append('price', price);
+                form_data.append('image', image);
+                form_data.append('description', description);
+                form_data.append('file', file_data);
+                form_data.append('update', "update");
+
+                $.ajax({
+                  type: "post",
+                  url: "admin_edit_ajax.php",
+                  contentType: false,
+                  cache: false,
+                  processData: false,
+                  data: form_data
+                }).then(function(e){
+                  window.location.replace("admin_goods.php")
+                })
+            }
           }
-
-
+        }else{
+          $("#errorPrice").show();
+        }
       }else{
-        $("#error").show();
+        $("#errorName").show();
       }
+
+
     }
 
     // ----------------------------------
@@ -275,7 +303,7 @@
             
         $.ajax({
             type: "post",
-            url: "test.php",
+            url: "admin_edit_ajax.php",
             contentType: false,
             cache: false,
             processData: false,
