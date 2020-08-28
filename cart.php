@@ -5,6 +5,10 @@ header("content-type:text/html; charset=utf-8");
 
 $admin = $_SESSION['login'];
 
+if($admin == ""){
+  $admin = "UserNotLogin";
+}
+
 if (isset($_POST['submit'])){
     $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
     $db->exec("SET CHARACTER SET utf8");
@@ -83,20 +87,6 @@ if (isset($_POST['submit'])){
         right: 50px;
         color: white;
         } 
-
-      .footer{
-        height: 30px;
-        color: #ffffff;
-        background: #c3c3c3;
-        text-align: center;
-        clear: both;
-        margin-bottom:2px;
-        padding-top: 4px;
-        padding: auto;
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-      }
 
       .fixed-bottom {
         position: fixed;
@@ -209,18 +199,16 @@ if (isset($_POST['submit'])){
 </div>
 
 
-<div class="footer fixed-bottom">
-    Dali E.so © 2020. All Rights Reserved
-</div>
-
 <script type="text/javascript">
+
+    if ("<?= $admin ?>" == "UserNotLogin"){
+      $("body").html("");
+      alert("請先登入！！");
+      window.location.href="login.php";
+    }
 
     $('.cart').addClass("active");
     $('.list').removeClass("active");
-
-    // $('#submit').on('click',function(){
-    //   $('#form').submit();
-    // })
 
 
     function addToCart(id,name,image,price,quantity,page){
@@ -239,7 +227,6 @@ if (isset($_POST['submit'])){
 			data: dataList
 		}).then(function(e){
       parent.location.reload();
-			// alert("商品已刪除！！");
 		})
 	}
 
@@ -259,7 +246,6 @@ if (isset($_POST['submit'])){
 			data: dataList
 		}).then(function(e){
       parent.location.reload();
-			// alert("商品已刪除！！");
 		})
   }
 

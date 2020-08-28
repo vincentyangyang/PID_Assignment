@@ -11,21 +11,6 @@ $db->exec("set names utf8");
 $result = $db->query("select * from goods");
 
 $db = null;
-// unset($_SESSION['id']);
-
-// var_dump($_SESSION['id']);
-
-// $item = array("a","b","c");
-
-// $item2 = array("d","e","f");
-// $_SESSION['arr'] = array();
-// array_push($_SESSION['arr'],$item,$item2);
-// echo count($_SESSION['arr']);
-
-// foreach ($_SESSION['arr'] as $s){
-// 	echo $s[0] == 'a';
-// }
-
 
 ?>
 
@@ -71,21 +56,6 @@ $db = null;
 		right: 50px;
 		color: white;
 	  }
-
-      .footer{
-        height: 30px;
-        color: #ffffff;
-        background: #c3c3c3;
-        text-align: center;
-        clear: both;
-        margin-bottom:2px;
-        padding-top: 4px;
-        padding: auto;
-        width: 100%;
-		position: absolute;
-		bottom: 0;
-      }
-
 
       h3{
 		align: center;
@@ -242,10 +212,6 @@ $db = null;
 </div>
 
 
-<!-- <div class="footer">
-    Dali E.so © 2020. All Rights Reserved
-</div> -->
-
 <script type="text/javascript">
 
 
@@ -270,25 +236,6 @@ $db = null;
 			alert("商品已加入購物車！！");
 		})
 	}
-
-
-// 	$(function(){
-//     function footerPosition(){
-//         $("footer").removeClass("fixed-bottom");
-//         var contentHeight = document.body.scrollHeight,
-//             winHeight = window.innerHeight;
-// 		alert(contentHeight);
-// 		alert(winHeight);
-//         if(!(contentHeight > winHeight)){
-
-//             $("footer").addClass("fixed-bottom");
-//         } else {
-//             $("footer").removeClass("fixed-bottom");
-//         }
-//     }
-//     footerPosition();
-//     $(window).resize(footerPosition);
-//   });
 
 
 </script>

@@ -216,13 +216,9 @@
                 processData: false,
                 data: form_data
               }).then(function(e){
-                if(e == "exist"){
-                  alert("此圖片名稱已存在！！");
-                }else{
                   $("#photo").prop("src","image/none.jpeg");
                   $('#form').trigger("reset");
                   alert("新增成功");
-                }
 
               })
             }else{

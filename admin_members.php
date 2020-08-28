@@ -160,7 +160,6 @@
 <script>
 
       $('.member').addClass("active");
-	    // $('.goods').removeClass("active");
 
       if ($('#status').html() === '正常'){
         $('#authority').html("停權");

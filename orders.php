@@ -4,6 +4,10 @@
 
     $admin = $_SESSION['login'];
 
+    if($admin == ""){
+      $admin = "UserNotLogin";
+    }
+
     $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
     $db->exec("SET CHARACTER SET utf8");
 
@@ -56,20 +60,6 @@
       color: white;
 	  }
 
-    .footer{
-        height: 30px;
-        color: #ffffff;
-        background: #c3c3c3;
-        text-align: center;
-        clear: both;
-        margin-bottom:2px;
-        padding-top: 4px;
-        padding: auto;
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-      }
-  
   </style>
 
 
@@ -149,11 +139,14 @@
 
 </div>
 
-<div class="footer">
-    Dali E.so © 2020. All Rights Reserved
-</div>
 
 <script>
+
+  if ("<?= $admin ?>" == "UserNotLogin"){
+    $("body").html("");
+      alert("請先登入！！");
+      window.location.href="login.php";
+    }
 
   $('.list').addClass("active");
 	$('.cart').removeClass("active");

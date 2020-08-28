@@ -56,18 +56,6 @@ $db = null;
 		color: white;
 	  } 
 
-      .footer{
-        height: 30px;
-        color: #ffffff;
-        background: #c3c3c3;
-        text-align: center;
-        clear: both;
-        margin-bottom:2px;
-        padding-top: 4px;
-        padding: auto;
-        width: 100%;
-        margin-top: 40px;
-      }
 
       .fixed-bottom {
         position: fixed;
@@ -149,13 +137,6 @@ $db = null;
 			</td>
 		</tr>
 </table>
-
-
-
-<div class="footer">
-    Dali E.so © 2020. All Rights Reserved
-</div>
-
 
 
 <script type="text/javascript">
