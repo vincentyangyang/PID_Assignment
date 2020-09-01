@@ -159,7 +159,7 @@
             <div class="form-group row">
                 <label for="description" class="col-4 col-form-label">說明</label> 
                 <div class="col-8">
-                  <textarea name="" id="description" cols="45" rows="10"><?= $row['description']?></textarea>
+                  <textarea name="" id="description" cols="45" rows="10"></textarea>
                 </div>
             </div>
 
@@ -186,7 +186,13 @@
     $('.goods').addClass("active");
 	  $('.member').removeClass("active");
 
-
+    var description = '<?= $row['description'] ?>';
+    console.log(description);
+    if(description != ""){
+      description = description.replace(/<br>/g,"\n");
+      console.log(description);
+      $("#description").val(description);
+    }
     //修改資料
     function goEdit(id){
       if($('#name').val() !== ""){
@@ -196,7 +202,7 @@
               var name = $('#name').val();
               var price = $('#price').val();
               var image = $('#image').val();
-              var description = $('#description').val();
+              var description = $('#description').val().replace(/\n/g, '<br>');
               var file_data = $('#image').prop('files')[0];   //取得上傳檔案屬性
               var form_data = new FormData();  //建構new FormData()
 
@@ -231,7 +237,7 @@
               var name = $('#name').val();
               var price = $('#price').val();
               var image = $('#image').val();
-              var description = $('#description').val();
+              var description = $('#description').val().replace(/\n/g, '<br>');
               var form_data = new FormData();  //建構new FormData()
 
               form_data.append('id', id);

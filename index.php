@@ -6,7 +6,7 @@ if (isset($_GET["logout"]))
 {
   unset($_SESSION["login"]);
   unset($_SESSION["id"]);
-	header("Location: login.php");
+	header("Location: index.php");
   exit();
 }
 
@@ -76,7 +76,7 @@ if (isset($_SESSION["login"])){
 <body>
   <nav class="navbar navbar-expand-md navbar-dark bg-primary">
 
-  <a href="http://localhost:8000/PID_Assignment/login.php" class="navbar-brand">商城</a>
+  <a href="http://localhost:8000/PID_Assignment/" class="navbar-brand">商城</a>
 
   <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
     <span class="navbar-toggler-icon"></span>

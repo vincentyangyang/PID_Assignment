@@ -143,7 +143,7 @@
         </td>
         <td>
             <span class="float-right">
-              <a id="authority" class="btn btn-outline-success btn-sm" href="admin_members.php?id=<?= $row['cId'] ?>&authority=<?= $row['Authority']==1 ? 0:1?>">停權</a>
+              <a class="authority btn btn-sm<?= $row['Authority']==1 ? ' btn-danger':' btn-outline-success'?>" href="admin_members.php?id=<?= $row['cId'] ?>&authority=<?= $row['Authority']==1 ? 0:1?>"><?= $row['Authority']==1 ? "停權":"恢復"?></a>
             </span>
         </td>
       </tr>
@@ -159,13 +159,9 @@
 
 <script>
 
+
       $('.member').addClass("active");
 
-      if ($('#status').html() === '正常'){
-        $('#authority').html("停權");
-      }else{
-        $('#authority').html("恢復");
-      }
 
       function goOrder(id){
         window.location.href="admin_member_orders.php?id="+id;

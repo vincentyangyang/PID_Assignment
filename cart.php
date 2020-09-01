@@ -204,7 +204,7 @@ if (isset($_POST['submit'])){
     if ("<?= $admin ?>" == "UserNotLogin"){
       $("body").html("");
       alert("請先登入！！");
-      window.location.href="login.php";
+      window.location.href="index.php";
     }
 
     $('.cart').addClass("active");

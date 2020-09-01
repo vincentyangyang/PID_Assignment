@@ -120,9 +120,9 @@
     <thead>
       <tr>
         <th>商品</th>
-        <th style="width:510px;">名稱</th>
+        <th style="width:455px;">名稱</th>
         <th style="width:80px;">價錢</th>
-        <th style="width:450px;">說明</th>
+        <th style="width:505px;">說明</th>
       </tr>
     </thead>
 

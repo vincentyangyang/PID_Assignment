@@ -167,7 +167,7 @@ $db = null;
       </li>
 
       <li class="nav-item">
-        <a href="login.php?logout=1" class="nav-link">登出</a>
+        <a href="index.php?logout=1" class="nav-link">登出</a>
       </li>
 
     </ul>

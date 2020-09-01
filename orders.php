@@ -87,7 +87,7 @@
       </li>
 
       <li class="nav-item">
-        <a href="login.php?logout=1" class="nav-link">登出</a>
+        <a href="index.php?logout=1" class="nav-link">登出</a>
       </li>
 
     </ul>
@@ -145,7 +145,7 @@
   if ("<?= $admin ?>" == "UserNotLogin"){
     $("body").html("");
       alert("請先登入！！");
-      window.location.href="login.php";
+      window.location.href="index.php";
     }
 
   $('.list').addClass("active");
