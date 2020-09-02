@@ -102,7 +102,7 @@
 <div id="divpass" class="form-group row">
     <label for="pass" class="col-4 col-form-label"><span class="float-right">密碼</span></label> 
     <div class="col-8">
-        <input id="pass" name="pass" type="text" class="form-control col-5" value="" placeholder="請輸入至少7碼的英文或數字" pattern="\w{7,}">
+        <input id="pass" name="pass" type="password" class="form-control col-5" value="" placeholder="請輸入至少7碼的英文或數字" pattern="\w{7,}">
     </div>
 </div>
 

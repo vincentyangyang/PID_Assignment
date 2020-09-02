@@ -93,6 +93,7 @@
         elseif(isset($_POST['register'])){
             $admin = $_POST['admin'];
             $pass = $_POST['pass'];
+            $pass = password_hash($pass,PASSWORD_BCRYPT);
             $email = $_POST['email'];
             $birthday = $_POST['birthday'];
             $phone = $_POST['phone'];
@@ -114,7 +115,7 @@
               $sth = $db->prepare("insert into customers (admin, password, email, birthday, phone) values (:admin, :pass, :email, :birthday, :phone)");
         
               $sth->bindParam("admin", $admin, PDO::PARAM_STR, 50);
-              $sth->bindParam("pass", $pass, PDO::PARAM_STR, 50);
+              $sth->bindParam("pass", $pass, PDO::PARAM_STR, 100);
               $sth->bindParam("email", $email, PDO::PARAM_STR, 50);
               $sth->bindParam("birthday", $birthday, PDO::PARAM_STR, 50);
               $sth->bindParam("phone", $phone, PDO::PARAM_STR,50);
@@ -135,16 +136,16 @@
             $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
             $db->exec("SET CHARACTER SET utf8");
      
-            $sth = $db->prepare("select * from customers where admin = :admin and password = :pass");
-        
+            $sth = $db->prepare("select * from customers where admin = :admin");
             $sth->bindParam("admin", $acc, PDO::PARAM_STR, 50);
-            $sth->bindParam("pass", $pass, PDO::PARAM_STR, 50);
-        
             $sth->execute();
-        
+
             $row = $sth->fetch();
+
+            $re = password_verify($pass,$row['password']);
+
         
-            if(!empty($row)){
+            if($re){
                 if ($row['Authority'] == 1){
                     $_SESSION["login"] = $acc;
                     $_SESSION["id"] = $row['cId'];
