@@ -30,6 +30,7 @@ $db = null;
 	
 	<style>
       body{
+		background-color:	#ECFFFF;
         padding: 0;
         margin: 0;
       }

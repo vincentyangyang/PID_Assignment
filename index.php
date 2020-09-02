@@ -38,6 +38,7 @@ if (isset($_SESSION["login"])){
 
     <style>
       body{
+        background-color:	#ECFFFF;
         padding: 0;
         margin: 0;
       }

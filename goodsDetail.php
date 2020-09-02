@@ -41,6 +41,7 @@ $db = null;
 
     <style>
       body{
+		background-color: #ECFFFF;
         padding: 0;
         margin: 0;
       }
@@ -120,7 +121,7 @@ $db = null;
 				<div style="width:80%; height:200;">
 					<dl style="margin-left:100px;">
 						<dd style="width:25%;"><h4>特色：</h4></dd>
-						<dd style="width:25%; margin-left:30px;"><?= $row['description'] ?></dd>
+						<dd style="width:70%; margin-left:30px;"><?= $row['description'] ?></dd>
 					</dl>
 				</div>
 
