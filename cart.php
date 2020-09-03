@@ -1,52 +1,52 @@
 <?php
 
-session_start();
-header("content-type:text/html; charset=utf-8");
+    require("config.php");
 
-$admin = $_SESSION['login'];
+    session_start();
 
-if($admin == ""){
-  $admin = "UserNotLogin";
-}
+    $admin = $_SESSION['login'];
 
-if (isset($_POST['submit'])){
-    $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
-    $db->exec("SET CHARACTER SET utf8");
-
-    $sth = $db->prepare("insert into Orders(cId, total) values (:cId, :total)");
-  
-    $sth->bindParam("cId", $_SESSION['id'], PDO::PARAM_INT);
-    $sth->bindParam("total", $_SESSION['total'], PDO::PARAM_INT);
-  
-    $sth->execute();
-
-
-    foreach($_SESSION['carts'] as $cart){
-      $sum = $cart[3]*$cart[4];
-
-      $result = $db->query("select * from Orders ORDER BY oId DESC LIMIT 0 , 1");
-      $row = $result->fetch();
-
-      $sth = $db->prepare("insert into OrderItem(oId, cId, name, quantity, sum) values (:oId, :cId, :name, :quantity, :sum)");
-
-      $sth->bindParam("oId", $row[0], PDO::PARAM_INT);
-      $sth->bindParam("cId", $_SESSION['id'], PDO::PARAM_INT);
-      $sth->bindParam("name", $cart[1], PDO::PARAM_STR, 100000);
-      $sth->bindParam("quantity", $cart[4], PDO::PARAM_INT);
-      $sth->bindParam("sum", $sum, PDO::PARAM_INT);
-    
-      $sth->execute();
-
+    if($admin == ""){
+      $admin = "UserNotLogin";
     }
 
-    $db = null;
+    //送出訂單
+    if (isset($_POST['submit'])){
 
-    unset($_SESSION['carts']);  
+        //insert to Orders
+        $sth = $db->prepare("insert into Orders(cId, total) values (:cId, :total)");
+        $sth->bindParam("cId", $_SESSION['id'], PDO::PARAM_INT);
+        $sth->bindParam("total", $_SESSION['total'], PDO::PARAM_INT);
+      
+        $sth->execute();
 
-    header("Location: orders.php");
-    exit();
 
-}
+        //insert to OrderItem
+        foreach($_SESSION['carts'] as $cart){
+          $sum = $cart[3]*$cart[4];
+
+          $result = $db->query("select * from Orders ORDER BY oId DESC LIMIT 0 , 1");
+          $row = $result->fetch();
+
+          $sth = $db->prepare("insert into OrderItem(oId, cId, name, quantity, sum) values (:oId, :cId, :name, :quantity, :sum)");
+          $sth->bindParam("oId", $row[0], PDO::PARAM_INT);
+          $sth->bindParam("cId", $_SESSION['id'], PDO::PARAM_INT);
+          $sth->bindParam("name", $cart[1], PDO::PARAM_STR, 100000);
+          $sth->bindParam("quantity", $cart[4], PDO::PARAM_INT);
+          $sth->bindParam("sum", $sum, PDO::PARAM_INT);
+        
+          $sth->execute();
+
+        }
+
+        $db = null;
+
+        unset($_SESSION['carts']);  
+
+        header("Location: orders.php");
+        exit();
+
+    }
 
 
 
@@ -200,13 +200,15 @@ if (isset($_POST['submit'])){
 
 <script type="text/javascript">
 
-$(window).keydown(function(event){
-    if(event.keyCode == 13) {
-      event.preventDefault();
-      return false;
-    }
-  }); 
+  //讓Enter無效
+  $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    }); 
 
+    //判斷是否登入
     if ("<?= $admin ?>" == "UserNotLogin"){
       $("body").html("");
       alert("請先登入！！");
@@ -217,25 +219,29 @@ $(window).keydown(function(event){
     $('.list').removeClass("active");
 
 
-    function addToCart(id,name,image,price,quantity,page){
-		var dataList = {
-			id: id,
-			name: name,
-			image: image,
-			price: price,
-			quantity: quantity,
-			page: page
-		}
-		
-		$.ajax({
-			type: "get",
-			url: "add.php",
-			data: dataList
-		}).then(function(e){
-      parent.location.reload();
-		})
-	}
 
+    //刪除商品
+    function addToCart(id,name,image,price,quantity,page){
+          var dataList = {
+            id: id,
+            name: name,
+            image: image,
+            price: price,
+            quantity: quantity,
+            page: page
+          }
+          
+          $.ajax({
+            type: "get",
+            url: "add.php",
+            data: dataList
+          }).then(function(e){
+            parent.location.reload();
+          })
+	    }
+
+
+  //當商品更改數量
   function calc(id,name,image,price,quantityInput) {
     var dataList = {
 			id: id,

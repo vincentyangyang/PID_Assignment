@@ -1,30 +1,19 @@
 <?php
-session_start();
-header("content-type:text/html; charset=utf-8");
 
-$admin = $_SESSION['login'];
+	require("config.php");
+	session_start();
 
-$db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
-$db->exec("SET CHARACTER SET utf8");
+	$admin = $_SESSION['login'];
 
-$sth = $db->prepare("select * from goods where gid = :id");
 
-$sth->bindParam("id", $_GET['id'], PDO::PARAM_INT);
+	$sth = $db->prepare("select * from goods where gid = :id");
+	$sth->bindParam("id", $_GET['id'], PDO::PARAM_INT);
+	$sth->execute();
 
-$sth->execute();
+	$row = $sth->fetch();
 
-$row = $sth->fetch();
 
-// if(!empty($row)){
-//     $_SESSION["login"] = $admin;
-//     header("Location: goodsList.php");
-//     exit();
-// }else{
-
-//     $fail = "帳號或密碼錯誤！！";
-// }
-
-$db = null;
+	$db = null;
 
 ?>
 

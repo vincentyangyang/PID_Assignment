@@ -1,10 +1,9 @@
 <?php
 
-header("content-type:text/html; charset=utf-8");
+require("config.php");
 
-$db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
-$db->exec("SET CHARACTER SET utf8");
 
+//新增商品資料到資料庫
 if(isset($_POST['insert'])){
     if($_FILES["file"]["error"] == 0){
 
@@ -28,6 +27,8 @@ if(isset($_POST['insert'])){
     }
 }
 
+
+//更新商品資料到資料庫(相片有更新)
 if(isset($_POST['update'])){
     if($_FILES["file"]["error"] == 0){
         $sth = $db->prepare("select * from Goods where gId = :gId");
@@ -49,7 +50,7 @@ if(isset($_POST['update'])){
     }
 }
 
-
+//更新商品資料到資料庫(相片無更新)
 if(isset($_POST['updateImageNoChange'])){
     $sth = $db->prepare("update Goods set name = :name,price = :price,description = :description where gId = :gId");
     $sth->bindParam("gId", $_POST['id'], PDO::PARAM_INT);    
@@ -60,6 +61,8 @@ if(isset($_POST['updateImageNoChange'])){
     $sth->execute();
 }
 
+
+//預覽圖片
 if(isset($_POST['change'])){
     if($_FILES["file"]["error"] == 0){
         $imageName = $_FILES["file"]["type"];

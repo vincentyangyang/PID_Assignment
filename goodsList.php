@@ -1,16 +1,14 @@
 <?php
-session_start();
-header("content-type:text/html; charset=utf-8");
+
+	require("config.php");
+	session_start();
 
 
-$admin = $_SESSION['login'];
+	$admin = $_SESSION['login'];
 
-$db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop;port=3306", "root", "root");
-$db->exec("set names utf8");
+	$result = $db->query("select * from goods");
 
-$result = $db->query("select * from goods");
-
-$db = null;
+	$db = null;
 
 ?>
 
@@ -23,7 +21,7 @@ $db = null;
     <title>首頁</title>
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	
@@ -144,7 +142,6 @@ $db = null;
 
 <div id="page-container">
 
-
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
 
   <a href="http://localhost:8000/PID_Assignment/goodsList.php" class="navbar-brand">商城</a>
@@ -155,23 +152,24 @@ $db = null;
 
   <div class="collapse navbar-collapse" id="navbarCollapse">
 
-    <ul class="navbar-nav">
+      <ul class="navbar-nav">
 
-      <li class="nav-item cart">
-        <a href="cart.php" class="nav-link">購物車</a>
-      </li>
+          <li class="nav-item cart">
+            <a href="cart.php" class="nav-link">購物車</a>
+          </li>
 
-      <li class="nav-item list">
-        <a href="goodsList.php" class="nav-link">商品列表</a>
-      </li>
+          <li class="nav-item list">
+            <a href="goodsList.php" class="nav-link">商品列表</a>
+          </li>
 
-      <li class="nav-item">
-        <a href="index.php?logout=1" class="nav-link">登出</a>
-      </li>
+          <li class="nav-item">
+            <a href="index.php?logout=1" class="nav-link">登出</a>
+          </li>
 
-    </ul>
+      </ul>
 
-	<span id="guest"> <a href="orders.php" class="btn btn-outline-light btn-sm">你好！<?= $admin ?></a> </span>
+      <span id="guest"> <a href="orders.php" class="btn btn-outline-light btn-sm">你好！<?= $admin ?></a> </span>
+
   </div>
 </nav>
 

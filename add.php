@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    //購物車
+    //購物車操作
     if(isset($_GET['id'])){
 
         $id = $_GET['id'];
@@ -13,10 +13,9 @@
         
         $count = count($_SESSION['carts']);
 
-
+        //刪除商品
         if ($page == 'cart'){
             for($i=0;$i<=$count;$i++){
-                echo $i;
                 if($_SESSION['carts'][$i][0] == $id){
                     if($quantity == 0){
                         unset($_SESSION['carts'][$i]);
@@ -27,18 +26,20 @@
                 break;
                 }
             }
-            // header("Location: cart.php");
             exit();
         }
 
-
+        //SESSION中沒有cart
         if (!isset($_SESSION['carts'])){
             $_SESSION['carts'] = array();
         }
 
         $flag = 0;
+
+
+        // SESSION中的格式[id,名稱,照片,價格,數量]
         
-        // SESSION[id,名稱,照片,價格,數量]
+        //若cart中有該商品則數量+1
         for($i=0;$i<=$count;$i++){
             if($_SESSION['carts'][$i][0] == $id){
                 $_SESSION['carts'][$i][4] += 1;
@@ -48,23 +49,23 @@
         }
 
 
-        // 購物車沒有此商品
+        //若購物車沒有此商品新增一筆SESSION
         if ($flag == 0){
             $item = [$id, $name, $image, $price, 1];
             array_push($_SESSION['carts'],$item);
         }
 
-
-        // header("Location: goodsList.php");
-
     }
 
-    //------------------
+
+    
+    //----------------------------------------
 
 
-    //登入,驗證
+    //登入or驗證
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-        //管理員介面
+
+        //管理員介面登入
         if (isset($_POST['authority'])){
             $admin = $_POST['admin'];
             $admin_pass = $_POST['pass'];
@@ -89,6 +90,7 @@
                 echo 'fail';
             }
         }
+
         //會員註冊
         elseif(isset($_POST['register'])){
             $admin = $_POST['admin'];
@@ -127,7 +129,8 @@
             }
         
         }
-        //使用者登入介面
+        
+        //會員登入
         else{
             $acc = $_POST['admin'];
             $pass = $_POST['pass'];

@@ -1,6 +1,7 @@
 <?php
+
+    require("config.php");
     session_start();
-    header("content-type:text/html; charset=utf-8");
 
     $admin = $_SESSION['login'];
 
@@ -8,8 +9,6 @@
       $admin = "UserNotLogin";
     }
 
-    $db = new PDO("mysql:host=127.0.0.1;dbname=Online_Shop", "root", "root");
-    $db->exec("SET CHARACTER SET utf8");
 
     $sth = $db->prepare("select name,quantity,sum,date,status from Orders inner join OrderItem on Orders.oId = OrderItem.oId where Orders.cId = :cId");
     $sth->bindParam("cId", $_SESSION['id'], PDO::PARAM_INT);    
@@ -56,57 +55,60 @@
         position: relative;
       }
 
-	  #guest{
-      position: absolute;
-      right: 50px;
-      color: white;
-	  }
+	     #guest{
+        position: absolute;
+        right: 50px;
+        color: white;
+	     }
 
   </style>
 
 
 </head>
+
+
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+  <nav class="navbar navbar-expand-md navbar-dark bg-primary">
 
-  <a href="http://localhost:8000/PID_Assignment/goodsList.php" class="navbar-brand">商城</a>
+      <a href="http://localhost:8000/PID_Assignment/goodsList.php" class="navbar-brand">商城</a>
 
-  <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-      <span class="navbar-toggler-icon"></span>
-  </button>
+      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="collapse navbar-collapse" id="navbarCollapse">
 
-    <ul class="navbar-nav">
+          <ul class="navbar-nav">
 
-      <li class="nav-item cart">
-        <a href="cart.php" class="nav-link">購物車</a>
-      </li>
+              <li class="nav-item cart">
+                <a href="cart.php" class="nav-link">購物車</a>
+              </li>
 
-      <li class="nav-item list">
-        <a href="goodsList.php" class="nav-link">商品列表</a>
-      </li>
+              <li class="nav-item list">
+                <a href="goodsList.php" class="nav-link">商品列表</a>
+              </li>
 
-      <li class="nav-item">
-        <a href="index.php?logout=1" class="nav-link">登出</a>
-      </li>
+              <li class="nav-item">
+                <a href="index.php?logout=1" class="nav-link">登出</a>
+              </li>
 
-    </ul>
+          </ul>
 
-	<span id="guest"> <a href="orders.php" class="btn btn-outline-light btn-sm">你好！<?= $admin ?></a> </span>
-  </div>
-</nav>
+          <span id="guest"> <a href="orders.php" class="btn btn-outline-light btn-sm">你好！<?= $admin ?></a> </span>
+
+      </div>
+  </nav>
 
 
 
-<div style="margin-top: 30px;" class="container">
+  <div style="margin-top: 30px;" class="container">
 
-<h2 align="center" style="padding-top:20px;">訂單記錄</h2>
+  <h2 align="center" style="padding-top:20px;">訂單記錄</h2>
 
- <span class="float-right" >
-    <a class="btn btn-info" href="goodsList.php">首頁</a>
- </span>
+  <span class="float-right" >
+      <a class="btn btn-info" href="goodsList.php">首頁</a>
+  </span>
              
   <table style="margin-top: 50px;" class="table table-hover table-striped">
 

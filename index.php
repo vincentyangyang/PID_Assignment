@@ -1,25 +1,18 @@
 <?php
 
-session_start();
+  session_start();
 
-if (isset($_GET["logout"]))
-{
-  unset($_SESSION["login"]);
-  unset($_SESSION["id"]);
-	header("Location: index.php");
-  exit();
-}
-
-if (isset($_SESSION["login"])){
-
-    header("Location: goodsList.php");
+  if (isset($_GET["logout"])){
+    unset($_SESSION["login"]);
+    unset($_SESSION["id"]);
+    header("Location: index.php");
     exit();
+  }
 
-}else{
-
-
-
-}
+  if (isset($_SESSION["login"])){
+      header("Location: goodsList.php");
+      exit();
+  }
 
 ?>
 
