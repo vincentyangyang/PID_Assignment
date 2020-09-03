@@ -161,7 +161,7 @@
       var acc = /\w{7,}/;
       var mail = /\w+([.-]\w+)*@\w+([.-]\w+)+/;
       var bd = /\d{4}-\d{2}-\d{2}/;
-      var tel = /\d{10}/;
+      var tel = /^\d{10}$/;
 
       var admin = $('#admin').val();
       var pass = $('#pass').val();
