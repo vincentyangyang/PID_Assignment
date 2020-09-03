@@ -175,10 +175,10 @@ if (isset($_POST['submit'])){
             $_SESSION['total'] = $total;
         ?>
         <tr style="height:150px;"> 
-            <td><img src="<?= $cart[2] ?>" style="width:100px; height:100px;" /></td>
+            <td><img src="image/<?= $cart[2] ?>" style="width:100px; height:100px;" /></td>
             <td height="50" align="left" class="trow"> <?= $cart[1] ?> </td>
             <td align="center" class="trow">
-                <input type="text" value="<?= $cart[4] ?>" onblur="calc(<?= $cart[0] ?>,'<?= $cart[1] ?>','<?= $cart[2] ?>',<?= $cart[3] ?>,this)">
+                <input id="quantity" type="text" value="<?= $cart[4] ?>" onblur="calc(<?= $cart[0] ?>,'<?= $cart[1] ?>','<?= $cart[2] ?>',<?= $cart[3] ?>,this)">
             </td>
             <td align="center" class="trow"><span id="price_<?= $cart[0] ?>"><?= $cart[3] ?></span></td>
             <td align="center" class="trow"><span id="subtotal_<?= $cart[0] ?>"><?= $sum ?></span></td>
@@ -199,6 +199,13 @@ if (isset($_POST['submit'])){
 
 
 <script type="text/javascript">
+
+$(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  }); 
 
     if ("<?= $admin ?>" == "UserNotLogin"){
       $("body").html("");
@@ -239,13 +246,23 @@ if (isset($_POST['submit'])){
 			page: 'cart'
 		}
 
-    $.ajax({
-			type: "get",
-			url: "add.php",
-			data: dataList
-		}).then(function(e){
+    var quantity = dataList['quantity'];
+    var r = /^(0|[1-9][0-9]*)$/;
+
+    if (r.test(quantity)){
+      $.ajax({
+        type: "get",
+        url: "add.php",
+        data: dataList
+      }).then(function(e){
+        parent.location.reload();
+      })
+    }else{
+      alert("請填入有效數值！！");
       parent.location.reload();
-		})
+    }
+
+
   }
 
 </script>
