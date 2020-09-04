@@ -5,11 +5,6 @@
 
     $admin = $_SESSION['login'];
 
-    if($admin == ""){
-      $admin = "UserNotLogin";
-    }
-
-
     $sth = $db->prepare("select name,quantity,sum,date,status from Orders inner join OrderItem on Orders.oId = OrderItem.oId where Orders.cId = :cId");
     $sth->bindParam("cId", $_SESSION['id'], PDO::PARAM_INT);    
     $sth->execute();
@@ -146,10 +141,10 @@
 
 <script>
 
-  if ("<?= $admin ?>" == "UserNotLogin"){
-    $("body").html("");
+    //判斷是否登入
+    if ("<?= isset($admin) ? FALSE:TRUE ?>"){
       alert("請先登入！！");
-      window.location.href="index.php";
+      history.go(-1);
     }
 
   $('.list').addClass("active");

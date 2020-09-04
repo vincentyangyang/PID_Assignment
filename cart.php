@@ -6,9 +6,6 @@
 
     $admin = $_SESSION['login'];
 
-    if($admin == ""){
-      $admin = "UserNotLogin";
-    }
 
     //送出訂單
     if (isset($_POST['submit'])){
@@ -209,10 +206,9 @@
     }); 
 
     //判斷是否登入
-    if ("<?= $admin ?>" == "UserNotLogin"){
-      $("body").html("");
+    if ("<?= isset($admin) ? FALSE:TRUE ?>"){
       alert("請先登入！！");
-      window.location.href="index.php";
+      history.go(-1);
     }
 
     $('.cart').addClass("active");

@@ -89,7 +89,7 @@
       </li>
 
       <li class="nav-item">
-        <a href="index.php?logout=1" class="nav-link">登出</a>
+        <a href="index.php?logout=1" class="nav-link"><?= isset($admin) ? '登出':'登入/註冊' ?></a>
       </li>
 
     </ul>
