@@ -4,6 +4,11 @@
 
     session_start();
 
+    if (!isset($_SESSION["admin"])){
+        header("Location: admin_login.php");
+        exit();
+    }
+
     $sth = $db->query("select g.name,o.quantity FROM Goods as g LEFT JOIN OrderItem as o on g.name = o.name");   
     $sth->execute();
 
