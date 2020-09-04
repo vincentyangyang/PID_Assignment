@@ -100,7 +100,6 @@ if (isset($_SESSION["admin"])){
       </div>
 
 
-
       <div class="form-group row">
           <div class="offset-4 col-10">
               <button id="submit" name="" value="OK" type="button" class="btn btn-success">登入</button>

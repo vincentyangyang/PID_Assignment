@@ -95,6 +95,10 @@
         <a href="admin_goods.php" class="nav-link">商品資料</a>
       </li>
 
+      <li class="nav-item canvas">
+          <a href="canvas.php" class="nav-link">銷售數據</a>
+      </li>
+
       <li class="nav-item">
         <a href="admin_login.php?logout=1" class="nav-link">登出</a>
       </li>
