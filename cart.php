@@ -208,6 +208,7 @@
     //判斷是否登入
     if ("<?= isset($admin) ? FALSE:TRUE ?>"){
       alert("請先登入！！");
+
       history.go(-1);
     }
 
