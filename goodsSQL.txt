@@ -1,0 +1,63 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.3
+-- https://www.phpmyadmin.net/
+--
+-- 主機： 127.0.0.1:3306
+-- 產生時間： 2020 年 09 月 08 日 08:32
+-- 伺服器版本： 5.7.26
+-- PHP 版本： 7.4.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- 資料庫： `Online_Shop_Laravel`
+--
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `goods`
+--
+
+CREATE TABLE `goods` (
+  `gId` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` int(11) NOT NULL,
+  `description` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- 傾印資料表的資料 `goods`
+--
+
+INSERT INTO `goods` (`gId`, `name`, `price`, `description`, `image`) VALUES
+(1, 'ASUS 華碩 X509MA-0151GN4100 筆電 黑灰色 N4100 4G 1TB+128G 附包+鼠', 13900, 'ASUS X509MA-0151GN4100 黑灰<br>原廠型號：X509MA-0151GN4100<br>系列：X509MA<br>機型：一般<br>處理器：Intel Celeron N4100<br>記憶體：4GB DDR4<br>顯示卡：Iris Plus GraphicsIntel HD Graphics 520', '2020090811_57_36.jpeg'),
+(2, 'DELL XPS15-9500-P1545STW銀 15吋筆電 i5/8G/512G/GTX1650Ti/W10專業版', 70900, '處理器CPU：10th Generation Intel Core i5 10300H (8MB Cache, up to 4.5 GHz, 4 cores)<br>\n隨機記憶體種類：8GB DDR4 Dual Channel SDRAM at 2933MHz(4Gx2)<br>\n顯示晶片：NVIDIA GeForce GTX 1650 Ti 4GB GDDR6<br>\n硬碟容量/轉速：512GB PCIe 3 x4 SSD<br>\n螢幕尺寸：15.6吋FHD<br>\n螢幕解析度：(1920 x 1200) InfinityEdge display 500-nits 100%sRGB<br>', '2.jpeg'),
+(3, 'ACER 宏碁 Swift 3 SF314 57 57FV I5-1035G1 8G 512GB 灰 14吋 窄邊框筆電', 23900, '◆ 作業系統：WIN10<br>\n◆ 處理器CPU：Intel® Core™ i5-1035G1(1.00 GHz/3.60 GHz)<br>\n◆ 顯示晶片：Intel UHD Graphics<br>\n◆ 記憶體(實際出貨)：8G DDR4 Onboard<br>\n◆ 記憶體支援容量(總插槽數量/總容量)： 1 / 12G<br>\n◆ 螢幕LCD：14\" FHD  IPS 霧面<br>\n◆ 解析度：1920x1080<br>\n◆ 儲存/硬碟：512GB PCIe SSD', '3.jpeg'),
+(4, 'ASUS 華碩 VivoBook S403 S403FA i5-10210U/8G/14吋 輕薄 筆電 冰河藍/玫瑰金', 26900, '◆ 螢幕：14&amp;quot;FHD 1920x1080 霧面寬螢幕 (LED)<br>◆ 處理器：Intel Core i5-10210U Processor 1.6 GHz (6M Cache, up to 4.2 GHz)<br>◆ 記憶體：LPDDR3 8G  (On board)<br>◆ 記憶體支援容量(總插槽數量/總容量)：(0/8)<br>◆ 硬碟：PCIE3X2 NVME 512G M.2 SSD<br>◆ 硬碟支援擴充：不可<br>◆ 顯示卡：Intel UHD Graphics 620', '2020090111:45:15.jpeg'),
+(5, 'ASUS Laptop F571GT-0411k9300H 星夜黑 華碩效能型筆電', 24300, '型號：F571GT-0411k9300H<br>處理器：Intel Core i5-9300H 4核心/8緒 2.4GHz超頻4.1GHz/8M Cache<br>顯示卡：NVIDIA GEFORCE GTX-1650 4G DDR5<br>記憶體：4G DDR4-2400 Onboard / 還有一個擴充插槽，最高支援16G<br>SSD硬碟：支援M.2 2280 PCIE G3X4 一個插槽<br>傳統硬碟：1TB 5400RPM 2.5吋 HDD<br>螢幕：15.6吋Narrow border 250nits FHD 1920x1080 16:9 Anti-Glare NTSC: 45% Wide View', '2020090111:47:14.jpeg'),
+(6, '【ASUS】X509JB 15.6吋雙碟輕薄筆電', 25000, '【ASUS】X509JB 15.6吋雙碟輕薄筆電(i5-1035G1/4G/1TB+256G PCIE SSD/MX 110 2G/W10)', '2020090111:48:47.jpeg'),
+(7, 'APPLE MacBook Pro系列 第十代 i5 四核心/16G/512G/銀/灰 13吋筆電 2020新機', 57900, '螢幕顯示:13.3 吋 (對角線) LED 背光顯示器，採用 IPS 技術；2560 x 1600 原生解析度。原彩顯示技術<br>CPU類型:第10代 Intel Core i5<br>中央處理器 :2.0GHz 4 核心第 10 代 Intel Core i5<br>記憶體:主機板內建 16GB 3733MHz LPDDR4X 記憶體<br>儲存設備:512GB SSD<br>照相機:720p FaceTime HD 相機<br>無線網路:802.11ac Wi‑Fi 無線、IEEE 802.11a/b/g/n 相容。藍牙 5.0 無線技術', '2020090816_06_40.jpeg');
+
+--
+-- 已傾印資料表的索引
+--
+
+--
+-- 資料表索引 `goods`
+--
+ALTER TABLE `goods`
+  ADD PRIMARY KEY (`gId`),
+  ADD UNIQUE KEY `goods_gid_unique` (`gId`);
+
+--
+-- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
+--
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `goods`
+--
+ALTER TABLE `goods`
+  MODIFY `gId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
