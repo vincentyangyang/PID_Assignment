@@ -211,7 +211,6 @@ class adminController extends Controller
 
                 $data = json_decode(json_encode($datas), true);
                 $data = ['range'=>'今日','data'=>$data];
-
             }elseif($id == 2){
                 $time = date("Y-m-d",strtotime("-1 day"))." 00:00:00";
                 $time2 = date("Y-m-d 23:59:59");
@@ -221,7 +220,6 @@ class adminController extends Controller
 
                 $data = json_decode(json_encode($datas), true);
                 $data = ['range'=>'最近7天','data'=>$data];
-
             }elseif($id == 3){
                 $time = date("Y-m-d",strtotime("last month"))." 00:00:00";
                 $time2 = date("Y-m-d 23:59:59");
@@ -231,8 +229,12 @@ class adminController extends Controller
 
                 $data = json_decode(json_encode($datas), true);
                 $data = ['range'=>'最近1個月','data'=>$data];
+            }else{
+                $datas = DB::select('select name, sum(quantity) as quantity from orderitems GROUP BY(name)');
 
-            }         
+                $data = json_decode(json_encode($datas), true);
+                $data = ['range'=>'全部','data'=>$data];                
+            }      
         }else{
             $datas = DB::select('select name, sum(quantity) as quantity from orderitems GROUP BY(name)');
 

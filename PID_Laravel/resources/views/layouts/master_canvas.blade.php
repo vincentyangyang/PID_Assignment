@@ -66,6 +66,7 @@
                     <a class="dropdown-item" href="?id=1">今日</a>
                     <a class="dropdown-item" href="?id=2">最近7天</a>
                     <a class="dropdown-item" href="?id=3">最近1個月</a>
+                    <a class="dropdown-item" href="?id=4">全部</a>
                 </div>
             </li>
 
