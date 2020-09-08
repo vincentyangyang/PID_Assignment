@@ -36,8 +36,13 @@ class userController extends Controller
             $re = password_verify($request->input('pass'),$customer['password']);
 
             if($re){
-                session(["login"=>$admin, "id"=>$customer['cId']]);
-                return 'success';
+                if($customer['authority'] == 0){
+                    return 'cantLogin';
+                }else{
+                    session(["login"=>$admin, "id"=>$customer['cId']]);
+                    return 'success';  
+                }
+
             }else{
                 return 'fail';
             }
