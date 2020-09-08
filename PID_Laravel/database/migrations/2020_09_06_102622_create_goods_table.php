@@ -17,7 +17,7 @@ class CreateGoodsTable extends Migration
             $table->increments("gId")->unique();
             $table->string("name");
             $table->integer("price");
-            $table->string("description",1000);
+            $table->string("description",1000)->nullable();
             $table->string("image");
         });
     }

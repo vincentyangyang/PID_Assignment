@@ -69,7 +69,7 @@
       </li>
 
       <li class="nav-item">
-        <a href="login?logout=1" class="nav-link">登出</a>
+        <a href="./?logout=1" class="nav-link">登出</a>
       </li>
 
     </ul>

@@ -11,6 +11,7 @@ use App\Good;
 use Illuminate\Support\Facades\DB;
 use View;
 
+
 class adminController extends Controller
 {
     public function login(Request $request){
@@ -74,9 +75,16 @@ class adminController extends Controller
         return view('admin_member_orders',$data);
     }
 
-    public function goods(){
+    public function goods(Request $request){
         if(!session('admin_login')){
             return redirect()->route('admin.login');
+        }
+        if($request->input('id')){
+            $imageName = Good::where('gId', $request->input('id'))->first();
+            unlink(storage_path('app/public/image/').$imageName['image']);
+            DB::delete('delete from goods where gId= ?',[$request->input('id')]);
+            
+            return 'success';    
         }
 
         $goods = Good::get();
@@ -92,15 +100,13 @@ class adminController extends Controller
 
         if($request->input('id')){
             $good = Good::where('gId', $request->input('id'))->first();
-            $data = ['row'=>$good];
+            $data = ['row'=>$good, 'action'=>'修改'];
 
             return view('admin_edit_goods',$data);
         }
         else{
-            return view('admin_edit_goods');
-        }
-        
-        
+            return view('admin_edit_goods',['action'=>'新增']);
+        }   
     }
 
     public function add_good(Request $request){
@@ -113,12 +119,20 @@ class adminController extends Controller
             date_default_timezone_set("Asia/Shanghai");
             $pm = date("Ymd").(date("h")+12);
             $dateTime = (date("a")=="pm") ? $pm.date(":i:s"):date("Ymdh:i:s");
+            $dateTime = str_replace(":","_",$dateTime);
             $name = $dateTime.'.'.$file->getClientOriginalExtension();
-
-            $file->move('../public/bower/image/', $name);
+            
+            $file->storeAs('public/image', $name);
 
             DB::insert('insert into goods(name, price, description, image) values (?,?,?,?)', 
                 [$request->input('name'), $request->input('price'), $request->input('description'), $name] );
+            
+            //刪除暫存檔
+            $files = glob(storage_path('app/public/storage/*'));
+            foreach($files as $file){
+                if(is_file($file))
+                    unlink($file);
+            }
     }
 
 
@@ -129,23 +143,34 @@ class adminController extends Controller
 
         //更新商品資料到資料庫(相片有更新)
         if($request->input('update')){
+            $imageName = Good::where('gId', $request->input('id'))->first();
+
             $file = $request->file('file');
 
             date_default_timezone_set("Asia/Shanghai");
             $pm = date("Ymd").(date("h")+12);
             $dateTime = (date("a")=="pm") ? $pm.date(":i:s"):date("Ymdh:i:s");
+            $dateTime = str_replace(":","_",$dateTime);
             $name = $dateTime.'.'.$file->getClientOriginalExtension();
-    
-            $file->move('../public/bower/image/', $name);
-    
+
+            $file->storeAs('public/image', $name);
+
             DB::update('update goods set name = ?,price = ?,image = ?,description = ? where gId = ?', 
-                [$request->input('name'), $request->input('price'), $request->input('description'), $request->input('id')] );                
+                [$request->input('name'), $request->input('price'), $name, $request->input('description'), $request->input('id')] );                
+            
+            //刪除之前的圖片及暫存檔
+            unlink(storage_path('app/public/image/').$imageName['image']);
+            $files = glob(storage_path('app/public/storage/*'));
+            foreach($files as $file){
+                if(is_file($file))
+                    unlink($file);
+            }
 
         }
 
         //更新商品資料到資料庫(相片無更新)
         if($request->input('imageNoChange')){
-            DB::update('update goods set name = ?,price = ?,image = ?,description = ? where gId = ?', 
+            DB::update('update goods set name = ?, price = ?, description = ? where gId = ?', 
                 [$request->input('name'), $request->input('price'), $request->input('description'), $request->input('id')] );   
         }
     }
@@ -160,13 +185,23 @@ class adminController extends Controller
             date_default_timezone_set("Asia/Shanghai");
             $pm = date("Ymd").(date("h")+12);
             $dateTime = (date("a")=="pm") ? $pm.date(":i:s"):date("Ymdh:i:s");
-
+            $dateTime = str_replace(":","_",$dateTime);
             $name = $dateTime.'.'.$file->getClientOriginalExtension();
 
-            $file->move('../public/bower/storage/', $name);
+            $file->storeAs('public/storage', $name);
 
             return $name;
+    }
 
+    public function canvas(){
+        if(!session('admin_login')){
+            return redirect()->route('admin.login');
+        }
+
+        $data = Good::leftJoin('orderitems','goods.name','=','orderitems.name')
+            ->select('goods.name','orderitems.quantity')->get();
+
+            return view('canvas',['data'=>$data]);
     }
 
 

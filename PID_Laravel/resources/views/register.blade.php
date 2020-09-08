@@ -71,7 +71,7 @@
       <ul class="navbar-nav">
 
         <li class="nav-item cart active">
-          <a href="login" class="nav-link">登入</a>
+          <a href="./" class="nav-link">登入</a>
         </li>
 
       </ul>
@@ -161,8 +161,6 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
       });
-
-
       //判斷格式是否正確-------------------------------------------------------
 
       var acc = /\w{7,}/;

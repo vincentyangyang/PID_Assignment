@@ -70,7 +70,7 @@
             </li>
 
             <li class="nav-item">
-              <a href="login?logout=1" class="nav-link">登出</a>
+              <a href="./?logout=1" class="nav-link">登出</a>
             </li>
 
           </ul>
@@ -103,7 +103,7 @@
             @forelse($goods as $row)
 
               <tr>
-                <td><img src="../bower/image/{{ $row['image'] }}" style="width:210px;height:210px;" alt=""></td>
+                <td><img src="../../storage/app/public/image/{{ $row['image'] }}" style="width:210px;height:210px;" alt=""></td>
                 <td>{{ $row['name'] }}</td>
                 <td>{{ $row['price'] }}</td>
                 <td>{!! $row['description'] !!}</td>
@@ -138,8 +138,9 @@
 
     function goDelete(id){
       $.ajax({
-        type: "delete",
-        url: "delete?id="+id,
+        type: "post",
+        url: "{{ route('admin.goods') }}",
+        data: {id: id}
       }).then(function(e){
         parent.location.reload();
       })

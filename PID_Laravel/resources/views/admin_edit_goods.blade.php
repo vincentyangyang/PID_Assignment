@@ -2,7 +2,7 @@
     <html lang="en">
     <head>
       
-      <title>修改商品資訊</title>
+      <title>{{ $action }}商品資訊</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -85,7 +85,7 @@
         </li>
 
         <li class="nav-item">
-          <a href="login?logout=1" class="nav-link">登出</a>
+          <a href="./?logout=1" class="nav-link">登出</a>
         </li>
 
       </ul>
@@ -96,7 +96,7 @@
 
 <div style="margin-top: 30px;" class="container">
 
-<h2 align="center" style="padding-top:20px;">修改商品資訊</h2>
+<h2 align="center" style="padding-top:20px;">{{ $action }}商品資訊</h2>
 
 <div style="margin-top: 50px;" class="container col-8">
         <form method="get" id="form">
@@ -123,7 +123,7 @@
                   <p style="color:blue;font-size:10px;">(點擊此處以上傳)</p>
                 </label> 
                 <div class="col-8">
-                    <img id="photo" src="../bower/image/{{ $row['image'] }}" class="col-12" style="border-style: outset;margin-left: 122px;"  >
+                    <img id="photo" src="../../storage/app/public/image/{{ $row['image'] }}" class="col-12" style="border-style: outset;margin-left: 122px;"  >
                     <input id="image" name="image" style="display: none;" accept="image/*" type="file" onchange="setImage()" class="form-control" value="image/{{ $row['image'] }}">
                 </div>
             </div>
@@ -157,7 +157,7 @@
                 <div class="col-8">
                     <input id="price" name="price" type="text" class="form-control" pattern="\d+">
                 </div>
-                <div id="errorPrice" class='text-center col-11' style="display:none;color:red;font-size:13px;">價錢必須為數字且不為0</div>
+                <div id="errorPrice" class='text-center col-11' style="display:none;color:red;font-size:13px;">請輸入有效價錢且不為0</div>
             </div>
 
             <div class="form-group row">
@@ -165,8 +165,8 @@
                   <p style="color:blue;font-size:10px;">(點擊此處以上傳)</p>
                 </label> 
                 <div class="col-8">
-                    <img id="photo" src="../bower/image/none.jpeg" class="col-12" style="border-style: outset;margin-left: 122px;"  >
-                    <input id="image" name="image" style="display: none;" accept="image/*" type="file" onchange="setImage()" class="form-control" value="../bower/image/none.jpeg">
+                    <img id="photo" src="../../storage/app/public/image/none.jpeg" class="col-12" style="border-style: outset;margin-left: 122px;"  >
+                    <input id="image" name="image" style="display: none;" accept="image/*" type="file" onchange="setImage()" class="form-control" value="../../storage/app/public/image/none.jpeg">
                 </div>
             </div>
 
@@ -219,8 +219,12 @@
 
     //新增or修改
     function goEdit(id){
+      $("#errorPrice").hide();
+      $("#errorName").hide();
+
       if($('#name').val() !== ""){
-        if(/[^0]\d+/.test($('#price').val())){
+        var r = /^([1-9][0-9]*)$/;
+        if(r.test($('#price').val())){
 
           //新增資料
           if (id == 0){
@@ -249,7 +253,7 @@
                   processData: false,
                   data: form_data
                 }).then(function(e){
-                    $("#photo").prop("src","../bower/image/none.jpeg");
+                    $("#photo").prop("src","../../storage/app/public/image/none.jpeg");
                     $('#form').trigger("reset");
                     alert("新增成功");
 
@@ -341,7 +345,7 @@
             processData: false,
             data: form_data,
             success: function(e){
-              $("#photo").prop("src","../bower/storage/"+e);
+              $("#photo").prop("src","../../storage/app/public/storage/"+e);
             }
         })
     }

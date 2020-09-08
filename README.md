@@ -1,3 +1,5 @@
 # PID_Assignment
 
-使用前請務必先建立資料庫，詳見'sql.txt'
+'PID_Laravel'是後來寫用框架寫的  
+會員頁面根目錄在public/下，管理者的在public/admin/
+

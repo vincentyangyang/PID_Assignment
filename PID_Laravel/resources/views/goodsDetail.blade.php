@@ -71,7 +71,7 @@
       </li>
 
       <li class="nav-item">
-        <a href="login?logout=1" class="nav-link">{!! !empty(Session::get('login')) ? '登出':'登入/註冊' !!}</a>
+        <a href="./?logout=1" class="nav-link">{!! !empty(Session::get('login')) ? '登出':'登入/註冊' !!}</a>
       </li>
 
     </ul>
@@ -84,7 +84,7 @@
 <table width="100%" border="0" align="center">
     <tr>
 			<td width="40%" align="right">
-				<div><img src="bower/image/{{ $good['image'] }}" width="360px" height="360px"/></div>
+				<div><img src="../storage/app/public/image/{{ $good['image'] }}" width="360px" height="360px"/></div>
         <br>
 			</td>
 

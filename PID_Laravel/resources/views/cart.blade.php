@@ -89,7 +89,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="login?logout=1" class="nav-link">{!! !empty(Session::get('login')) ? '登出':'登入/註冊' !!}</a>
+            <a href="./?logout=1" class="nav-link">{!! !empty(Session::get('login')) ? '登出':'登入/註冊' !!}</a>
           </li>
 
         </ul>
@@ -115,7 +115,7 @@
             
             @forelse($carts as $cart)
               <tr style="height:150px;"> 
-                  <td><img src="bower/image/{{ $cart[2] }}" style="width:100px; height:100px;" /></td>
+                  <td><img src="../storage/app/public/image/{{ $cart[2] }}" style="width:100px; height:100px;" /></td>
                   <td height="50" align="left" class="trow"> {{ $cart[1] }} </td>
                   <td align="center" class="trow">
                       <input id="quantity" type="text" value="{{ $cart[4] }}" onblur="calc({{ $cart[0] }},'{{ $cart[1] }}','{{ $cart[2] }}',{{ $cart[3] }},this)">

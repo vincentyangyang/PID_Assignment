@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('login','userController@login')->name('login');
+Route::get('','userController@login')->name('login');
 Route::post('login','userController@loginPost')->name('loginPost');
 
 Route::get('register','userController@register')->name('register');
@@ -32,13 +32,17 @@ Route::post('addPost','userController@addPost')->name('addPost');
 
 
 Route::prefix('admin')->group(function(){
-    Route::get('login','adminController@login')->name('admin.login');
+    Route::get('','adminController@login')->name('admin.login');
     Route::post('loginPost','adminController@loginPost')->name('admin.loginPost');
 
     Route::get('members','adminController@members')->name('admin.members');
     Route::get('member_orders','adminController@member_orders')->name('admin.member_orders');
+
     Route::get('goods','adminController@goods')->name('admin.goods');
+    Route::post('goods','adminController@goods')->name('admin.goods');
+
     Route::get('goods_action','adminController@goods_action')->name('admin.goods_action');
+    Route::get('canvas','adminController@canvas')->name('admin.canvas');
 
     Route::post('edit','adminController@edit_good')->name('admin.edit');
     Route::post('add','adminController@add_good')->name('admin.add');

@@ -68,7 +68,7 @@
               </li>
 
               <li class="nav-item">
-                <a href="login?logout=1" class="nav-link">{!! !empty(Session::get('login')) ? '登出':'登入/註冊' !!}</a>
+                <a href="./?logout=1" class="nav-link">{!! !empty(Session::get('login')) ? '登出':'登入/註冊' !!}</a>
               </li>
 
           </ul>

@@ -148,7 +148,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="login?logout=1" class="nav-link">{!! !empty(Session::get('login')) ? '登出':'登入/註冊' !!}</a>
+            <a href="./?logout=1" class="nav-link">{!! !empty(Session::get('login')) ? '登出':'登入/註冊' !!}</a>
           </li>
 
       </ul>
@@ -168,7 +168,7 @@
 
 			<div style="height:380px;margin: auto;width: 240px;padding:0 20px;border-style: solid;border-width:1px;border-color: #BDB76B;">
 				<ul>
-					<li class="img"><a href="goodsDetail?id={{ $row['gId'] }}"><img src="bower/image/{{ $row['image'] }}"/></a></li>
+					<li class="img"><a href="goodsDetail?id={{ $row['gId'] }}"><img src="../storage/app/public/image/{{ $row['image'] }}"/></a></li>
 					<li class="pname" style="margin-bottom:0; height:80px;">
 						<a href="goodsDetail?id={{ $row['gId'] }}">
 							<p id="goodsName">{{ $row['name'] }}</p>
@@ -179,7 +179,7 @@
 					<li class="col3" style="margin-top:3px;">
 						<a id="add" class="add_cart" href="javascript:void(0)" 	onclick="addToCart({{ $row['gId'] }},'{{ $row['name'] }}','{{ $row['image'] }}','{{ $row['price'] }}',0,'list')">
 
-							<img src="bower/image/add_to_cart.png" style="width:110px; height:28px;">
+							<img src="../storage/app/public/image/add_to_cart.png" style="width:110px; height:28px;">
 						</a>
 					</li>
 				</ul>

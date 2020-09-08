@@ -50,7 +50,7 @@
 <body>
   <nav class="navbar navbar-expand-md navbar-dark bg-primary">
 
-  <a href="http://localhost:8000/PID_Assignment/PID_Laravel/public/login" class="navbar-brand">商城</a>
+  <a href="http://localhost:8000/PID_Assignment/PID_Laravel/public/" class="navbar-brand">商城</a>
 
   <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
     <span class="navbar-toggler-icon"></span>
