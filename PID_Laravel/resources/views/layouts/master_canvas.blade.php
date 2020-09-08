@@ -59,7 +59,7 @@
 
             <li class="nav-item dropdown active">
                 <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?= isset($rows['city']) ? $rows['city']:"請選擇區間" ?>
+                    {{ $range }}
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
