@@ -1,4 +1,4 @@
-@extends('layouts.master_admin')
+@extends('layouts.master_canvas')
 
 @section('title','銷售數據')
 

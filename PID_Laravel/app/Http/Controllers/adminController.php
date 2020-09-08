@@ -193,15 +193,44 @@ class adminController extends Controller
             return $name;
     }
 
-    public function canvas(){
+    public function canvas(Request $request){
         if(!session('admin_login')){
             return redirect()->route('admin.login');
         }
+        date_default_timezone_set("Asia/Shanghai");
 
-        $data = Good::leftJoin('orderitems','goods.name','=','orderitems.name')
-            ->select('goods.name','orderitems.quantity')->get();
 
-            return view('canvas',['data'=>$data]);
+        if($request->input('id')){
+            $id = $request->input('id');
+            if($id == 1){
+                $time = date("Y-m-d 00:00:00");
+                $time2 = date("Y-m-d 23:59:59");
+
+                $datas = DB::select("select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders where date between ? and ?) GROUP BY(name)",
+                        [$time,$time2]);
+
+            }elseif($id == 2){
+                $time = date("Y-m-d",strtotime("-1 day"))." 00:00:00";
+                $time2 = date("Y-m-d 23:59:59");
+
+                $datas = DB::select("select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders where date between ? and ?) GROUP BY(name)",
+                [$time,$time2]);
+
+            }elseif($id == 3){
+                $time = date("Y-m-d",strtotime("last month"))." 00:00:00";
+                $time2 = date("Y-m-d 23:59:59");
+
+                $datas = DB::select("select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders where date between ? and ?) GROUP BY(name)",
+                [$time,$time2]);
+
+            }         
+        }else{
+            $datas = DB::select('select name, sum(quantity) as quantity from orderitems GROUP BY(name)');
+        }
+
+
+        $data = json_decode(json_encode($datas), true);
+        return view('canvas',['data'=>$data]);
     }
 
 
