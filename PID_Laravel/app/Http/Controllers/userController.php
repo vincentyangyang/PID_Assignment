@@ -17,6 +17,8 @@ class userController extends Controller
         if($request->input('logout')){
             $request->session()->forget('login');
             $request->session()->forget('id');
+            $request->session()->forget('carts');
+            
             return redirect()->route('login');
         }
 
