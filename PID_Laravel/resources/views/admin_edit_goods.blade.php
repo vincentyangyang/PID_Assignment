@@ -73,7 +73,7 @@
                         <div class="col-8">
                             <input id="name" name="name" type="text" class="form-control">
                         </div>
-                        <div id="errorName" class='text-center col-11' style="display:none;color:red;font-size:13px;">商品名稱不得為空</div>
+                        <div id="errorName" class='offset-4 col-4' style="display:none;color:red;font-size:13px;">商品名稱不得為空</div>
                     </div>
 
                     <div class="form-group row">
@@ -81,7 +81,7 @@
                         <div class="col-8">
                             <input id="price" name="price" type="text" class="form-control" pattern="\d+">
                         </div>
-                        <div id="errorPrice" class='text-center col-11' style="display:none;color:red;font-size:13px;">請輸入有效價錢且不為0</div>
+                        <div id="errorPrice" class='offset-4 col-4' style="display:none;color:red;font-size:13px;">請輸入有效價錢且不為0</div>
                     </div>
 
                     <div class="form-group row">

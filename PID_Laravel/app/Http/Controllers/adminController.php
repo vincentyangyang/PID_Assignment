@@ -206,16 +206,16 @@ class adminController extends Controller
                 $time = date("Y-m-d 00:00:00");
                 $time2 = date("Y-m-d 23:59:59");
 
-                $datas = DB::select("select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders where date between ? and ?) GROUP BY(name)",
+                $datas = DB::select("select G.name, A.quantity from goods as G left join (select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders where date between ? and ?) GROUP BY(name)) as A on G.name = A.name",
                     [$time,$time2]);
 
                 $data = json_decode(json_encode($datas), true);
                 $data = ['range'=>'今日','data'=>$data];
             }elseif($id == 2){
-                $time = date("Y-m-d",strtotime("-1 day"))." 00:00:00";
+                $time = date("Y-m-d",strtotime("-7 day"))." 00:00:00";
                 $time2 = date("Y-m-d 23:59:59");
 
-                $datas = DB::select("select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders where date between ? and ?) GROUP BY(name)",
+                $datas = DB::select("select G.name, A.quantity from goods as G left join (select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders where date between ? and ?) GROUP BY(name)) as A on G.name = A.name",
                 [$time,$time2]);
 
                 $data = json_decode(json_encode($datas), true);
@@ -224,22 +224,22 @@ class adminController extends Controller
                 $time = date("Y-m-d",strtotime("last month"))." 00:00:00";
                 $time2 = date("Y-m-d 23:59:59");
 
-                $datas = DB::select("select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders where date between ? and ?) GROUP BY(name)",
+                $datas = DB::select("select G.name, A.quantity from goods as G left join (select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders where date between ? and ?) GROUP BY(name)) as A on G.name = A.name",
                 [$time,$time2]);
 
                 $data = json_decode(json_encode($datas), true);
                 $data = ['range'=>'最近1個月','data'=>$data];
             }else{
-                $datas = DB::select('select name, sum(quantity) as quantity from orderitems GROUP BY(name)');
+                $datas = DB::select('select G.name, A.quantity from goods as G left join (select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders) GROUP BY(name)) as A on G.name = A.name');
 
                 $data = json_decode(json_encode($datas), true);
                 $data = ['range'=>'全部','data'=>$data];                
             }      
         }else{
-            $datas = DB::select('select name, sum(quantity) as quantity from orderitems GROUP BY(name)');
+            $datas = DB::select('select G.name, A.quantity from goods as G left join (select name, sum(quantity) as quantity from orderitems where oId in (select oId from orders) GROUP BY(name)) as A on G.name = A.name');
 
             $data = json_decode(json_encode($datas), true);
-            $data = ['range'=>'請選擇區間','data'=>$data];
+            $data = ['range'=>'全部','data'=>$data];
         }
 
 
